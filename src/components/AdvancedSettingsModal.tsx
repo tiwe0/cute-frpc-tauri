@@ -64,24 +64,24 @@ const AdvancedSettingsModal: React.FC<AdvancedSettingsModalProps> = ({
           <div className="settings-section">
             <h3>🌐 服务器设置</h3>
             <div className="form-group">
-              <label htmlFor="server-addr">服务器地址:</label>
+              <label htmlFor="server-addr" className="form-label">服务器地址:</label>
               <input
                 id="server-addr"
                 type="text"
                 value={serverAddr}
                 onChange={(e) => setServerAddr(e.target.value)}
                 placeholder="frp.example.com"
-                className="form-input"
+                className="modal-form-input"
               />
             </div>
             <div className="form-group">
-              <label htmlFor="server-port">服务器端口:</label>
+              <label htmlFor="server-port" className="form-label">服务器端口:</label>
               <input
                 id="server-port"
                 type="number"
                 value={serverPort}
                 onChange={(e) => setServerPort(Number(e.target.value))}
-                className="form-input"
+                className="modal-form-input"
               />
             </div>
           </div>
@@ -89,40 +89,40 @@ const AdvancedSettingsModal: React.FC<AdvancedSettingsModalProps> = ({
           <div className="settings-section">
             <h3>🎮 自定义游戏</h3>
             <div className="form-group">
-              <label htmlFor="custom-game-name">游戏名称:</label>
+              <label htmlFor="custom-game-name" className="form-label">游戏名称:</label>
               <input
                 id="custom-game-name"
                 type="text"
                 value={customGameName}
                 onChange={(e) => setCustomGameName(e.target.value)}
                 placeholder="输入游戏名称"
-                className="form-input"
+                className="modal-form-input"
               />
             </div>
             <div className="form-group">
-              <label htmlFor="custom-port">端口号:</label>
+              <label htmlFor="custom-port" className="form-label">端口号:</label>
               <input
                 id="custom-port"
                 type="number"
                 value={customPort}
                 onChange={(e) => setCustomPort(Number(e.target.value))}
-                className="form-input"
+                className="modal-form-input"
               />
             </div>
             <div className="form-group">
-              <label htmlFor="protocol-type">协议类型:</label>
+              <label htmlFor="protocol-type" className="form-label">协议类型:</label>
               <select
                 id="protocol-type"
                 value={protocolType}
                 onChange={(e) => setProtocolType(e.target.value as 'tcp' | 'udp')}
-                className="form-select"
+                className="modal-form-select"
               >
                 <option value="tcp">TCP</option>
                 <option value="udp">UDP</option>
               </select>
             </div>
             <button 
-              className="add-game-button"
+              className="modal-add-game-button"
               onClick={handleAddCustomGame}
               disabled={!customGameName.trim()}
             >
@@ -139,10 +139,10 @@ const AdvancedSettingsModal: React.FC<AdvancedSettingsModalProps> = ({
         </div>
 
         <div className="modal-footer">
-          <button className="button-secondary" onClick={onClose}>
+          <button className="modal-button-secondary" onClick={onClose}>
             取消
           </button>
-          <button className="button-primary" onClick={handleSave}>
+          <button className="modal-button-primary" onClick={handleSave}>
             保存设置
           </button>
         </div>

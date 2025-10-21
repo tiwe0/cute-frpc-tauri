@@ -16,14 +16,12 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
 }) => {
   const { isConnecting, connectionStatus, connectionCompleted, isAnimating } = connectionState;
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onConnect();
-  };
-
   const handleButtonClick = () => {
     if (isConnecting && connectionCompleted) {
       onDisconnect();
+    } else if (!isConnecting) {
+      // 如果不在连接状态，执行连接操作
+      onConnect();
     }
   };
 
@@ -37,9 +35,9 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
             <span className="status-text">{connectionStatus}</span>
           </div>
         )}
-        <form onSubmit={handleSubmit}>
+        <div>
           <button
-            type={isConnecting ? "button" : "submit"}
+            type="button"
             className={`connect-button ${
               isConnecting && !connectionCompleted
                 ? "connecting waiting"
@@ -51,11 +49,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
               (!gamePort && !isConnecting) ||
               (isConnecting && !connectionCompleted)
             }
-            onClick={
-              isConnecting && connectionCompleted
-                ? handleButtonClick
-                : undefined
-            }
+            onClick={handleButtonClick}
           >
             {isConnecting && !connectionCompleted ? (
               <span className="connecting-spinner">⏳</span>
@@ -65,7 +59,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
               "🚀 开始连接"
             )}
           </button>
-        </form>
+        </div>
       </div>
     </div>
   );
