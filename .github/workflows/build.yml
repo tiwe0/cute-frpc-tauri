@@ -12,15 +12,11 @@ jobs:
 
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
-        node-version: [18]
+        os: [windows-latest, macos-latest]
+        node-version: [23]
         include:
           - os: windows-latest
             rust-target: x86_64-pc-windows-msvc
-          - os: ubuntu-latest
-            rust-target: x86_64-unknown-linux-gnu
-          - os: macos-latest
-            rust-target: x86_64-apple-darwin
           - os: macos-latest
             rust-target: aarch64-apple-darwin  # 支持 ARM64 Mac 编译 (Apple Silicon)
 
