@@ -6,4 +6,3 @@ export { default as ConnectionManager } from './ConnectionManager';
 export { default as Footer } from './Footer';
 export { default as AudioPlayer } from './AudioPlayer';
 export { default as AdvancedSettingsModal } from './AdvancedSettingsModal';
-export { default as SettingsButton } from './SettingsButton';

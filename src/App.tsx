@@ -15,7 +15,6 @@ import {
   Footer,
   AudioPlayer,
   AdvancedSettingsModal,
-  SettingsButton,
 } from "./components";
 
 // Hooks
@@ -300,10 +299,7 @@ function App() {
           />
         </form>
 
-        <Footer />
-
-        {/* 高级设置按钮 */}
-        <SettingsButton onClick={handleOpenAdvancedSettings} />
+        <Footer onOpenAdvancedSettings={handleOpenAdvancedSettings} />
 
         {/* 高级设置弹窗 */}
         <AdvancedSettingsModal
