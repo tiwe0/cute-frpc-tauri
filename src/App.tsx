@@ -1,4 +1,5 @@
 import "./App.css";
+import theGameListData from "./gamelist.json";
 
 import { useState, useEffect, useRef, use } from "react";
 import { resolveResource } from "@tauri-apps/api/path";
@@ -36,11 +37,7 @@ function App() {
   const [loginError, setLoginError] = useState<string>('');
 
   // Game state
-  const [gameList] = useState<Game[]>([
-    { name: "Minecraft", defaultPort: 25565, background: "/assets/minecraft.webp", type: "tcp" },
-    { name: "Terraria", defaultPort: 7777, background: "/assets/terraria.webp", type: "udp" },
-    { name: "Stardew Valley", defaultPort: 24642, background: "/assets/stardewvalley.webp", type: "tcp" },
-  ]);
+  const [gameList] = useState<Game[]>(theGameListData as Game[]);
   const [gamePort, setGamePort] = useState<number | null>(null);
 
   // Connection state
