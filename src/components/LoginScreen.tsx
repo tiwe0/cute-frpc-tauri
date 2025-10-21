@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useSakuraFrpApi } from "../hooks/useSakuraFrpApi";
 
 interface LoginScreenProps {
   onLogin: (apiKey: string) => void;
@@ -14,15 +13,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
 }) => {
   const [apiKey, setApiKey] = useState("");
 
-  const { setToken, userInfo, getUserInfo } = useSakuraFrpApi();
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (apiKey.trim()) {
-      // onLogin(apiKey.trim());
-      setToken(apiKey.trim());
-      await getUserInfo();
-      console.log(userInfo)
+      onLogin(apiKey.trim());
     }
   };
 

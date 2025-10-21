@@ -1,6 +1,6 @@
 import "./App.css";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, use } from "react";
 import { resolveResource } from "@tauri-apps/api/path";
 import { readTextFile } from "@tauri-apps/plugin-fs";
 import { Child } from "@tauri-apps/plugin-shell";
@@ -21,6 +21,7 @@ import {
 // Hooks
 import { useBackgroundTransition } from "./hooks/useBackgroundTransition";
 import { useLogger } from "./hooks/useLogger";
+import { useSakuraFrpApi } from "./hooks/useSakuraFrpApi";
 
 // Types
 import { Game, ConnectionState, FRPCConfig } from "./types";
@@ -76,6 +77,10 @@ function App() {
     addLog, 
     clearLogs 
   } = useLogger();
+
+  const {
+    setToken, userInfo, getUserInfo
+  } = useSakuraFrpApi();
 
   // Services
   const frpcService = createFRPCService();
@@ -153,10 +158,12 @@ function App() {
 
     try {
       // 模拟API Key验证
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      setToken(apiKey);
+      await getUserInfo();
+      console.log('User Info:', userInfo);
       
       // 简单的API Key验证逻辑（实际项目中应该调用真实的API）
-      if (apiKey === 'demo-key-2025' || apiKey.startsWith('sk-')) {
+      if (userInfo.data) {
         setIsAuthenticated(true);
         // 登录成功后开始初始化
         initConfig();
