@@ -8,6 +8,7 @@ import { Child } from "@tauri-apps/plugin-shell";
 // Components
 import {
   LoadingScreen,
+  LoginScreen,
   BackgroundManager,
   GameSelector,
   Logger,
@@ -28,6 +29,11 @@ import { Game, ConnectionState, FRPCConfig } from "./types";
 import { createFRPCService } from "./services/frpcService";
 
 function App() {
+  // Authentication state
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [loginError, setLoginError] = useState<string>('');
+
   // Game state
   const [gameList] = useState<Game[]>([
     { name: "Minecraft", defaultPort: 25565, background: "/assets/minecraft.webp", type: "tcp" },
@@ -140,6 +146,30 @@ function App() {
     }
   };
 
+  // Login handler
+  const handleLogin = async (apiKey: string) => {
+    setLoginLoading(true);
+    setLoginError('');
+
+    try {
+      // 模拟API Key验证
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // 简单的API Key验证逻辑（实际项目中应该调用真实的API）
+      if (apiKey === 'demo-key-2025' || apiKey.startsWith('sk-')) {
+        setIsAuthenticated(true);
+        // 登录成功后开始初始化
+        initConfig();
+      } else {
+        setLoginError('无效的 API Key，请检查后重试');
+      }
+    } catch (error) {
+      setLoginError('验证失败，请稍后重试');
+    } finally {
+      setLoginLoading(false);
+    }
+  };
+
   // Game selection handler
   const handleGameSelect = (port: number, game: Game) => {
     setGamePort(port);
@@ -238,7 +268,8 @@ function App() {
 
   // Effects
   useEffect(() => {
-    initConfig();
+    // 只有在用户已认证时才初始化配置
+    // initConfig 将在登录成功后手动调用
   }, []);
 
   // 当显示 logger 时，设置动画完成状态
@@ -263,19 +294,33 @@ function App() {
         backgroundTransition={backgroundTransition}
       />
 
-      <LoadingScreen
-        isLoading={isLoading}
-        loadingExiting={loadingExiting}
-      />
+      {/* 登录界面 */}
+      {!isAuthenticated && (
+        <LoginScreen
+          onLogin={handleLogin}
+          isLoading={loginLoading}
+          error={loginError}
+        />
+      )}
 
-      <div
-        className={`content-wrapper ${
-          isLoading ? "content-hidden" : "content-visible"
-        }`}
-      >
-        <AudioPlayer audioRef={audioRef} />
+      {/* 加载界面 - 只在已登录且正在加载时显示 */}
+      {isAuthenticated && (
+        <LoadingScreen
+          isLoading={isLoading}
+          loadingExiting={loadingExiting}
+        />
+      )}
 
-        <h1>蓝联花</h1>
+      {/* 主界面内容 - 只在已登录且加载完成时显示 */}
+      {isAuthenticated && (
+        <div
+          className={`content-wrapper ${
+            isLoading ? "content-hidden" : "content-visible"
+          }`}
+        >
+          <AudioPlayer audioRef={audioRef} />
+
+          <h1>蓝联花</h1>
 
         <form className="form-container">
           <GameSelector
@@ -308,7 +353,8 @@ function App() {
           frpcConfig={frpcConfig}
           onConfigChange={handleConfigChange}
         />
-      </div>
+        </div>
+      )}
     </main>
   );
 }
