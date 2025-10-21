@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { useSakuraFrpApi } from "../hooks/useSakuraFrpApi";
 
 interface LoginScreenProps {
   onLogin: (apiKey: string) => void;
@@ -6,15 +7,25 @@ interface LoginScreenProps {
   error?: string;
 }
 
-const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, isLoading, error }) => {
-  const [apiKey, setApiKey] = useState('');
+const LoginScreen: React.FC<LoginScreenProps> = ({
+  onLogin,
+  isLoading,
+  error,
+}) => {
+  const [apiKey, setApiKey] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const { setToken, userInfo, getUserInfo } = useSakuraFrpApi();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (apiKey.trim()) {
-      onLogin(apiKey.trim());
+      // onLogin(apiKey.trim());
+      setToken(apiKey.trim());
+      await getUserInfo();
+      console.log(userInfo)
     }
   };
+
 
   return (
     <div className="login-screen">
@@ -29,7 +40,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, isLoading, error }) 
 
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="login-form-group">
-            <label htmlFor="api-key" className="login-label">API Key</label>
+            <label htmlFor="api-key" className="login-label">
+              API Key
+            </label>
             <input
               id="api-key"
               type="password"
@@ -54,7 +67,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, isLoading, error }) 
                 验证中...
               </>
             ) : (
-              '登录'
+              "登录"
             )}
           </button>
         </form>
