@@ -1,0 +1,86 @@
+name: Build/Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        node-version: [18]
+        include:
+          - os: windows-latest
+            rust-target: x86_64-pc-windows-msvc
+          - os: ubuntu-latest
+            rust-target: x86_64-unknown-linux-gnu
+          - os: macos-latest
+            rust-target: x86_64-apple-darwin
+          - os: macos-latest
+            rust-target: aarch64-apple-darwin  # 支持 ARM64 Mac 编译 (Apple Silicon)
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{ matrix.rust-target }}
+          default: true
+
+      - name: Install dependencies
+        run: pnpm install
+        
+      - name: Install Tauri CLI globally
+        run: pnpm add -g @tauri-apps/cli
+
+      - name: Build and Export Next.js
+        run: pnpm build
+
+      - name: Build Tauri APP
+        run: tauri build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}-${{ matrix.rust-target }}-build
+          path: |
+            src-tauri/target/release/bundle/**/*
+            
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: src-tauri/target/release/bundle/**/*.*
+          asset_name: ${{ matrix.os }}-${{ matrix.rust-target }}-build.zip
+          asset_content_type: application/zip
