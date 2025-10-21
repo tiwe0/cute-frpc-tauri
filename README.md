@@ -1,7 +1,98 @@
-# Tauri + React + Typescript
+# 🌸 蓝联花 - 游戏联机工具
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
+一个简单易用的游戏内网穿透工具，帮助你和朋友一起玩局域网游戏！支持 Minecraft、Terraria、星露谷物语等热门游戏。
 
-## Recommended IDE Setup
+## ✨ 功能特色
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+- 🎮 **支持多种游戏**: 预设了 Minecraft、Terraria、星露谷物语等热门游戏端口
+- 🚀 **一键连接**: 选择游戏后一键开始内网穿透
+- 📱 **界面友好**: 简洁美观的用户界面，小白也能轻松使用
+- 🎨 **游戏主题**: 每个游戏都有专属的背景主题
+- 📝 **实时日志**: 显示连接状态和详细日志信息
+- 🎵 **背景音乐**: 舒缓的背景音乐增强使用体验
+
+## 🎯 适用场景
+
+想和朋友联机玩游戏，但是：
+- 朋友在不同的网络环境下？
+- 路由器设置太复杂？
+- 不知道怎么配置端口转发？
+
+蓝联花帮你解决这些问题！
+
+## 🚀 快速开始
+
+### 第一步：下载软件
+从 [发布页面](https://github.com/tiwe0/cute-frpc-tauri/releases) 下载最新版本的蓝联花
+
+### 第二步：打开游戏
+先启动你想玩的游戏，创建或加入房间
+
+### 第三步：选择游戏
+在蓝联花中选择对应的游戏类型
+
+### 第四步：开始连接
+点击"🚀 开始连接"按钮，等待连接成功
+
+### 第五步：分享地址
+连接成功后，将显示的外网地址分享给朋友
+
+## 🎮 支持的游戏
+
+| 游戏名称 | 默认端口 | 状态 |
+|---------|---------|------|
+| Minecraft | 25565 | ✅ 支持 |
+| Terraria | 7777 | ✅ 支持 |
+| 星露谷物语 | 24642 | ✅ 支持 |
+| 其他游戏 | 自定义 | 🔄 开发中 |
+
+## 💡 使用技巧
+
+1. **确保游戏正在运行**: 在开始连接前，请先启动游戏并创建房间
+2. **查看连接日志**: 如果连接失败，可以查看详细的日志信息来排查问题
+3. **网络稳定性**: 保持网络连接稳定，避免频繁断网
+4. **分享外网地址**: 连接成功后，将外网地址(IP:端口)发送给朋友
+
+## ❓ 常见问题
+
+### Q: 连接失败怎么办？
+A: 请检查：
+- 游戏是否正在运行
+- 端口号是否正确
+- 网络连接是否正常
+- 防火墙是否阻止了程序
+
+### Q: 朋友无法连接我的服务器？
+A: 请确认：
+- 蓝联花显示"连接成功"
+- 将完整的外网地址(包括端口)分享给朋友
+- 朋友使用外网地址而不是你的本地IP
+
+### Q: 支持添加其他游戏吗？
+A: 目前正在开发自定义端口功能，敬请期待！
+
+## 🔧 开发者信息
+
+### 技术栈
+- **前端**: React + TypeScript + Vite
+- **后端**: Rust + Tauri
+- **内网穿透**: frpc
+
+### 系统要求
+- Windows 10/11 (x64)
+- macOS 10.15+ (Intel/Apple Silicon)
+- Linux (x64)
+
+## 📧 联系我们
+
+- 📧 邮箱: contact@ivory.cafe
+- 💻 GitHub: https://github.com/tiwe0/cute-frpc-tauri
+- 🐛 问题反馈: [提交 Issue](https://github.com/tiwe0/cute-frpc-tauri/issues)
+
+## 📄 开源协议
+
+本项目采用 MIT 协议开源，详见 [LICENSE](LICENSE) 文件。
+
+---
+
+💖 **感谢使用蓝联花！祝你和朋友游戏愉快！**
