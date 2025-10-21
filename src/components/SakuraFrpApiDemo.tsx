@@ -33,9 +33,9 @@ const SakuraFrpApiDemo: React.FC = () => {
     tunnels,
     getTunnels,
     createTunnel,
-    editTunnel,
+    // editTunnel,
     deleteTunnel,
-    lockTunnel,
+    // lockTunnel,
 
     // 通用操作
     refreshAll,

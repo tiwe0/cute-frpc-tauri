@@ -1,7 +1,7 @@
 import "./App.css";
 import theGameListData from "./gamelist.json";
 
-import { useState, useEffect, useRef, use } from "react";
+import { useState, useEffect, useRef } from "react";
 import { resolveResource } from "@tauri-apps/api/path";
 import { readTextFile } from "@tauri-apps/plugin-fs";
 import { Child } from "@tauri-apps/plugin-shell";
