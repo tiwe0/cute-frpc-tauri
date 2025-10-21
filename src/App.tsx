@@ -2,6 +2,7 @@ import "./App.css";
 
 import { useState, useEffect, useRef } from "react";
 import { resolveResource } from "@tauri-apps/api/path";
+import { readTextFile } from "@tauri-apps/plugin-fs";
 import { Child } from "@tauri-apps/plugin-shell";
 
 // Components
@@ -13,6 +14,8 @@ import {
   ConnectionManager,
   Footer,
   AudioPlayer,
+  AdvancedSettingsModal,
+  SettingsButton,
 } from "./components";
 
 // Hooks
@@ -20,7 +23,7 @@ import { useBackgroundTransition } from "./hooks/useBackgroundTransition";
 import { useLogger } from "./hooks/useLogger";
 
 // Types
-import { Game, ConnectionState } from "./types";
+import { Game, ConnectionState, FRPCConfig } from "./types";
 
 // Services
 import { createFRPCService } from "./services/frpcService";
@@ -45,6 +48,10 @@ function App() {
   // Loading state
   const [isLoading, setIsLoading] = useState(true);
   const [loadingExiting, setLoadingExiting] = useState(false);
+
+  // Advanced settings state
+  const [showAdvancedSettings, setShowAdvancedSettings] = useState(false);
+  const [frpcConfig, setFrpcConfig] = useState<FRPCConfig | null>(null);
 
   // Audio reference
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -74,6 +81,24 @@ function App() {
       // 模拟加载时间
       await new Promise(resolve => setTimeout(resolve, 2500));
       
+      // 加载 FRPC 配置
+      try {
+        const resourcePath = await resolveResource('resources/default_config.toml');
+        const configContent = await readTextFile(resourcePath);
+        const config = FRPCConfig.fromTOML(configContent);
+        setFrpcConfig(config);
+        console.log('配置加载成功:', config);
+      } catch (configError) {
+        console.warn('配置加载失败，使用默认配置:', configError);
+        // 设置默认配置
+        const defaultConfig = new FRPCConfig(
+          "frp.example.com",
+          7000,
+          []
+        );
+        setFrpcConfig(defaultConfig);
+      }
+      
       // 开始退出动画
       setLoadingExiting(true);
       
@@ -94,8 +119,7 @@ function App() {
         }
       }, 600);
       
-      const resourcePath = await resolveResource('resources/default_config.toml');
-      console.log('Config path:', resourcePath);
+      console.log('Config path:', await resolveResource('resources/default_config.toml'));
     } catch (error) {
       console.error('Failed to initialize config:', error);
       setLoadingExiting(true);
@@ -123,6 +147,21 @@ function App() {
     if (game.background) {
       changeBackground(game.background);
     }
+  };
+
+  // Advanced settings handlers
+  const handleOpenAdvancedSettings = () => {
+    setShowAdvancedSettings(true);
+  };
+
+  const handleCloseAdvancedSettings = () => {
+    setShowAdvancedSettings(false);
+  };
+
+  const handleConfigChange = (config: FRPCConfig) => {
+    setFrpcConfig(config);
+    // 这里可以添加保存配置到文件的逻辑
+    console.log('配置已更新:', config);
   };
 
   // Connection handlers
@@ -262,6 +301,17 @@ function App() {
         </form>
 
         <Footer />
+
+        {/* 高级设置按钮 */}
+        <SettingsButton onClick={handleOpenAdvancedSettings} />
+
+        {/* 高级设置弹窗 */}
+        <AdvancedSettingsModal
+          isOpen={showAdvancedSettings}
+          onClose={handleCloseAdvancedSettings}
+          frpcConfig={frpcConfig}
+          onConfigChange={handleConfigChange}
+        />
       </div>
     </main>
   );

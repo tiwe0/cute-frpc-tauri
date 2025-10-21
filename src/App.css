@@ -1039,3 +1039,326 @@ button {
     text-align: center;
   }
 }
+
+/* 高级设置按钮 */
+.settings-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background: rgba(76, 86, 106, 0.9);
+  border: 2px solid rgba(136, 192, 208, 0.5);
+  border-radius: 50%;
+  color: #eceff4;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.settings-button:hover {
+  background: rgba(94, 129, 172, 0.9);
+  border-color: rgba(136, 192, 208, 0.8);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4), 0 0 0 0 rgba(136, 192, 208, 0.4);
+  }
+  70% {
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4), 0 0 0 10px rgba(136, 192, 208, 0);
+  }
+  100% {
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4), 0 0 0 0 rgba(136, 192, 208, 0);
+  }
+}
+
+.settings-button:active {
+  transform: translateY(-1px) scale(1.02);
+}
+
+/* 弹窗样式 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background: linear-gradient(135deg, 
+    rgba(46, 52, 64, 0.95) 0%, 
+    rgba(59, 66, 82, 0.95) 100%);
+  border-radius: 20px;
+  border: 1px solid rgba(136, 192, 208, 0.3);
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: slideIn 0.3s ease-out;
+  backdrop-filter: blur(20px);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid rgba(136, 192, 208, 0.2);
+  background: rgba(76, 86, 106, 0.3);
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: #eceff4;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: #d8dee9;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+  background: rgba(191, 97, 106, 0.2);
+  color: #bf616a;
+  transform: scale(1.1);
+}
+
+.modal-body {
+  padding: 2rem;
+  max-height: 60vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(136, 192, 208, 0.3) transparent;
+}
+
+.modal-body::-webkit-scrollbar {
+  width: 6px;
+  display: block;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: rgba(76, 86, 106, 0.2);
+  border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: rgba(136, 192, 208, 0.4);
+  border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(136, 192, 208, 0.6);
+}
+
+.settings-section {
+  margin-bottom: 2rem;
+}
+
+.settings-section h3 {
+  color: #88c0d0;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(136, 192, 208, 0.2);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  color: #d8dee9;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(76, 86, 106, 0.4);
+  border: 1px solid rgba(136, 192, 208, 0.3);
+  border-radius: 8px;
+  color: #eceff4;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: rgba(136, 192, 208, 0.6);
+  background: rgba(76, 86, 106, 0.6);
+  box-shadow: 0 0 0 2px rgba(136, 192, 208, 0.2);
+}
+
+.form-input::placeholder {
+  color: rgba(216, 222, 233, 0.5);
+}
+
+.add-game-button {
+  background: linear-gradient(135deg, #a3be8c 0%, #8fbcbb 100%);
+  border: none;
+  border-radius: 8px;
+  color: #2e3440;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.add-game-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(163, 190, 140, 0.3);
+}
+
+.add-game-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.config-preview {
+  background: rgba(46, 52, 64, 0.8);
+  border: 1px solid rgba(136, 192, 208, 0.2);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.config-preview pre {
+  color: #d8dee9;
+  font-size: 0.8rem;
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: 'Courier New', monospace;
+  line-height: 1.4;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  border-top: 1px solid rgba(136, 192, 208, 0.2);
+  background: rgba(76, 86, 106, 0.2);
+}
+
+.button-secondary {
+  background: rgba(76, 86, 106, 0.6);
+  border: 1px solid rgba(136, 192, 208, 0.3);
+  border-radius: 8px;
+  color: #d8dee9;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.button-secondary:hover {
+  background: rgba(76, 86, 106, 0.8);
+  border-color: rgba(136, 192, 208, 0.5);
+  transform: translateY(-1px);
+}
+
+.button-primary {
+  background: linear-gradient(135deg, #5e81ac 0%, #81a1c1 100%);
+  border: none;
+  border-radius: 8px;
+  color: #eceff4;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+}
+
+.button-primary:hover {
+  background: linear-gradient(135deg, #4c566a 0%, #5e81ac 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(94, 129, 172, 0.3);
+}
+
+/* 响应式设计 - 弹窗 */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95%;
+    max-height: 90vh;
+  }
+  
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: 1rem;
+  }
+  
+  .modal-footer {
+    flex-direction: column;
+  }
+  
+  .button-secondary,
+  .button-primary {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .settings-button {
+    width: 50px;
+    height: 50px;
+    bottom: 15px;
+    right: 15px;
+    font-size: 1.2rem;
+  }
+}

@@ -8,9 +8,9 @@ importers:
 
   .:
     dependencies:
-      '@iarna/toml':
-        specifier: ^2.2.5
-        version: 2.2.5
+      '@ltd/j-toml':
+        specifier: ^1.38.0
+        version: 1.38.0
       '@tauri-apps/api':
         specifier: ^2
         version: 2.9.0
@@ -296,9 +296,6 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@iarna/toml@2.2.5':
-    resolution: {integrity: sha512-trnsAYxU3xnS1gPHPyU961coFyLkh4gAD/0zQ5mymY4yOZ+CYvsPqUbOFSw0aDM4y0tV7tiFxL/1XfXPNC6IPg==}
-
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
 
@@ -314,6 +311,9 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
+
+  '@ltd/j-toml@1.38.0':
+    resolution: {integrity: sha512-lYtBcmvHustHQtg4X7TXUu1Xa/tbLC3p2wLvgQI+fWVySguVZJF60Snxijw5EiohumxZbR10kWYFFebh1zotiw==}
 
   '@rolldown/pluginutils@1.0.0-beta.27':
     resolution: {integrity: sha512-+d0F4MKMCbeVUJwG96uQ4SgAznZNSq93I3V+9NHA4OpvqG8mRCpGdKmK8l/dl02h2CCDHwW2FqilnTyDcAnqjA==}
@@ -920,8 +920,6 @@ snapshots:
   '@esbuild/win32-x64@0.25.11':
     optional: true
 
-  '@iarna/toml@2.2.5': {}
-
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
@@ -940,6 +938,8 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
+
+  '@ltd/j-toml@1.38.0': {}
 
   '@rolldown/pluginutils@1.0.0-beta.27': {}
 

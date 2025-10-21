@@ -1,4 +1,4 @@
-import TOMLParser from "@iarna/toml";
+import TOML from "@ltd/j-toml";
 
 export interface Game {
   name: string;
@@ -59,7 +59,7 @@ export class FRPCConfig {
   }
 
   static fromTOML(tomlString: string): FRPCConfig {
-    const parsed = TOMLParser.parse(tomlString);
+    const parsed = TOML.parse(tomlString);
     const serverAddr = parsed["serverAddr"] as string;
     const serverPort = Number(parsed["serverPort"]);
     let proxies: FPRCProxyConfig[] = [];
@@ -91,6 +91,6 @@ export class FRPCConfig {
       })),
     };
 
-    return TOMLParser.stringify(tomlObject);
+    return TOML.stringify(tomlObject);
   }
 }
