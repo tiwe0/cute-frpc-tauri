@@ -18,7 +18,7 @@ function App() {
   const [logs, setLogs] = useState<{id: number, timestamp: string, content: string, hasColors: boolean}[]>([]);
   const [showLogger, setShowLogger] = useState(false);
   const [loggerAnimating, setLoggerAnimating] = useState(false);
-  const [currentBackground, setCurrentBackground] = useState<string>("/assets/default.jpg");
+  const [currentBackground, setCurrentBackground] = useState<string>("");
   const [backgroundTransition, setBackgroundTransition] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [loadingExiting, setLoadingExiting] = useState(false);
@@ -34,10 +34,13 @@ function App() {
       // 开始退出动画
       setLoadingExiting(true);
       
-      // 等待退出动画完成后再隐藏加载屏幕并播放音乐
+      // 等待退出动画完成后再隐藏加载屏幕、设置默认背景并播放音乐
       setTimeout(() => {
         setIsLoading(false);
         setLoadingExiting(false);
+        
+        // 设置默认背景
+        setCurrentBackground("/assets/default.jpg");
         
         // 播放背景音乐
         if (audioRef.current) {
@@ -56,6 +59,9 @@ function App() {
       setTimeout(() => {
         setIsLoading(false);
         setLoadingExiting(false);
+        
+        // 设置默认背景
+        setCurrentBackground("/assets/default.jpg");
         
         // 即使出错也尝试播放音乐
         if (audioRef.current) {
@@ -273,18 +279,28 @@ function App() {
   }, [showLogger, loggerAnimating, isConnecting]);
 
   return (
-    <main className={`container ${backgroundTransition ? 'background-transition' : ''}`}>
-      <div 
-        className="background-image" 
+    <main
+      className={`container ${
+        backgroundTransition ? "background-transition" : ""
+      }`}
+    >
+      <div
+        className={`background-image ${
+          currentBackground ? "background-visible" : ""
+        }`}
         style={{
-          backgroundImage: currentBackground ? `url(${currentBackground})` : 'none'
+          backgroundImage: currentBackground
+            ? `url(${currentBackground})`
+            : "none",
         }}
       />
       <div className="background-overlay" />
-      
+
       {/* 加载动画 */}
       {isLoading && (
-        <div className={`loading-screen ${loadingExiting ? 'loading-exit' : ''}`}>
+        <div
+          className={`loading-screen ${loadingExiting ? "loading-exit" : ""}`}
+        >
           <div className="loading-content">
             <div className="loading-logo">
               <div className="loading-icon">🌸</div>
@@ -299,139 +315,140 @@ function App() {
           </div>
         </div>
       )}
-      
-      <div className={`content-wrapper ${isLoading ? 'content-hidden' : 'content-visible'}`}>
+
+      <div
+        className={`content-wrapper ${
+          isLoading ? "content-hidden" : "content-visible"
+        }`}
+      >
         {/* 背景音乐 */}
-        <audio 
-          ref={audioRef} 
-          loop 
-          preload="auto"
-        >
+        <audio ref={audioRef} loop preload="auto">
           <source src="/sound/music.mp3" type="audio/mpeg" />
           您的浏览器不支持音频播放。
         </audio>
-        
+
         <h1>蓝联花</h1>
 
-      <form
-        className="form-container"
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleConnect();
-        }}
-      >
-        <div className="form-group">
-          <label htmlFor="game-port" className="form-label">
-            选择游戏端口:
-          </label>
-        </div>
-
-        <div className="form-group">
-          <select
-            id="game-port"
-            className="form-select"
-            value={gamePort ?? ""}
-            onChange={(e) => {
-              const selectedPort = Number(e.currentTarget.value);
-              setGamePort(selectedPort);
-              
-              // 查找对应的游戏并切换背景
-              const selectedGame = gameList.find(game => game.defaultPort === selectedPort);
-              if (selectedGame?.background) {
-                changeBackground(selectedGame.background);
-              }
-            }}
-            disabled={isConnecting}
-          >
-            <option value="" disabled>
-              请选择游戏...
-            </option>
-            {gameList.map((game: any) => (
-              <option key={game.defaultPort} value={game.defaultPort}>
-                {game.name} (端口: {game.defaultPort})
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="form-group">
-          <div className="button-container">
-            {(isConnecting || isAnimating) && (
-              <div
-                className={`status-display ${isAnimating ? "slideOut" : ""}`}
-              >
-                <span className="status-text">{connectionStatus}</span>
-              </div>
-            )}
-            <button
-              type={isConnecting ? "button" : "submit"}
-              className={`connect-button ${
-                isConnecting && !connectionCompleted
-                  ? "connecting waiting"
-                  : isConnecting && connectionCompleted
-                  ? "connecting"
-                  : ""
-              }`}
-              disabled={(!gamePort && !isConnecting) || (isConnecting && !connectionCompleted)}
-              onClick={isConnecting && connectionCompleted ? handleDisconnect : undefined}
-            >
-              {isConnecting && !connectionCompleted ? (
-                <span className="connecting-spinner">⏳</span>
-              ) : isConnecting && !isAnimating && connectionCompleted ? (
-                "✕"
-              ) : (
-                "🚀 开始连接"
-              )}
-            </button>
+        <form
+          className="form-container"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleConnect();
+          }}
+        >
+          <div className="form-group">
+            <label htmlFor="game-port" className="form-label">
+              选择游戏端口:
+            </label>
           </div>
-        </div>
 
-        {showLogger && (
-          <div className={`form-group logger-form-group ${loggerAnimating ? 'logger-slide-in' : 'logger-slide-out'}`}>
-            <div className="logger-container">
-              <div className="logger-content">
-                {logs.length === 0 ? (
-                  <div className="no-logs">正在初始化...</div>
+          <div className="form-group">
+            <select
+              id="game-port"
+              className="form-select"
+              value={gamePort ?? ""}
+              onChange={(e) => {
+                const selectedPort = Number(e.currentTarget.value);
+                setGamePort(selectedPort);
+
+                // 查找对应的游戏并切换背景
+                const selectedGame = gameList.find(
+                  (game) => game.defaultPort === selectedPort
+                );
+                if (selectedGame?.background) {
+                  changeBackground(selectedGame.background);
+                }
+              }}
+              disabled={isConnecting}
+            >
+              <option value="" disabled>
+                请选择游戏...
+              </option>
+              {gameList.map((game: any) => (
+                <option key={game.defaultPort} value={game.defaultPort}>
+                  {game.name} (端口: {game.defaultPort})
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group">
+            <div className="button-container">
+              {(isConnecting || isAnimating) && (
+                <div
+                  className={`status-display ${isAnimating ? "slideOut" : ""}`}
+                >
+                  <span className="status-text">{connectionStatus}</span>
+                </div>
+              )}
+              <button
+                type={isConnecting ? "button" : "submit"}
+                className={`connect-button ${
+                  isConnecting && !connectionCompleted
+                    ? "connecting waiting"
+                    : isConnecting && connectionCompleted
+                    ? "connecting"
+                    : ""
+                }`}
+                disabled={
+                  (!gamePort && !isConnecting) ||
+                  (isConnecting && !connectionCompleted)
+                }
+                onClick={
+                  isConnecting && connectionCompleted
+                    ? handleDisconnect
+                    : undefined
+                }
+              >
+                {isConnecting && !connectionCompleted ? (
+                  <span className="connecting-spinner">⏳</span>
+                ) : isConnecting && !isAnimating && connectionCompleted ? (
+                  "✕"
                 ) : (
-                  logs.map((log) => (
-                    <div key={log.id} className="log-entry">
-                      {log.hasColors ? (
-                        <span dangerouslySetInnerHTML={{ __html: log.content }} />
-                      ) : (
-                        log.content
-                      )}
-                    </div>
-                  ))
+                  "🚀 开始连接"
                 )}
-                <div ref={logEndRef} />
-              </div>
+              </button>
             </div>
           </div>
-        )}
-      </form>
-      
-      {/* 版权信息 */}
-      <footer className="footer-section">
-        <div className="copyright-info">
-          <div className="copyright-text">
-            © 2025 蓝联花 - 游戏内网穿透工具
+
+          {showLogger && (
+            <div
+              className={`form-group logger-form-group ${
+                loggerAnimating ? "logger-slide-in" : "logger-slide-out"
+              }`}
+            >
+              <div className="logger-container">
+                <div className="logger-content">
+                  {logs.length === 0 ? (
+                    <div className="no-logs">正在初始化...</div>
+                  ) : (
+                    logs.map((log) => (
+                      <div key={log.id} className="log-entry">
+                        {log.hasColors ? (
+                          <span
+                            dangerouslySetInnerHTML={{ __html: log.content }}
+                          />
+                        ) : (
+                          log.content
+                        )}
+                      </div>
+                    ))
+                  )}
+                  <div ref={logEndRef} />
+                </div>
+              </div>
+            </div>
+          )}
+        </form>
+
+        {/* 版权信息 */}
+        <footer className="footer-section">
+          <div className="copyright-info">
+            <div className="copyright-text">© 2025 蓝联花 - 游戏联机工具</div>
+            <div className="copyright-text">📧 contact@ivory.cafe | 💻 https://github.com/tiwe0/cute-frpc-tauri</div>
+            <div className="copyright-text">v0.1.0 | Made with ❤️ by Ivory</div>
           </div>
-          <div className="contact-info">
-            <span className="contact-item">
-              📧 联系邮箱: support@lianhua.dev
-            </span>
-            <span className="contact-item">
-              🌐 官网: https://lianhua.dev
-            </span>
-            <span className="contact-item">
-              💬 QQ群: 123456789
-            </span>
-          </div>
-          <div className="version-info">
-            v1.0.0 | Made with 💙 by 蓝联花团队
-          </div>
-        </div>
-      </footer>
+        </footer>
       </div>
     </main>
   );

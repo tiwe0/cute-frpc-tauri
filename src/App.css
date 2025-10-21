@@ -79,7 +79,11 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   z-index: -3;
-  transition: opacity 0.6s ease-in-out;
+  transition: opacity 0.8s ease-in-out;
+  opacity: 0;
+}
+
+.background-image.background-visible {
   opacity: 1;
 }
 
