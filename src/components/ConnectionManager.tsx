@@ -35,31 +35,33 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
             <span className="status-text">{connectionStatus}</span>
           </div>
         )}
-        <div>
-          <button
-            type="button"
-            className={`connect-button ${
-              isConnecting && !connectionCompleted
-                ? "connecting waiting"
-                : isConnecting && connectionCompleted
-                ? "connecting"
-                : ""
-            }`}
-            disabled={
-              (!gamePort && !isConnecting) ||
-              (isConnecting && !connectionCompleted)
-            }
-            onClick={handleButtonClick}
-          >
-            {isConnecting && !connectionCompleted ? (
-              <span className="connecting-spinner">⏳</span>
-            ) : isConnecting && !isAnimating && connectionCompleted ? (
-              "✕"
-            ) : (
-              "🚀 开始连接"
-            )}
-          </button>
-        </div>
+        <button
+          type="button"
+          className={`connect-button ${
+            isConnecting && !connectionCompleted
+              ? "connecting waiting"
+              : isConnecting && connectionCompleted
+              ? "connecting"
+              : ""
+          }`}
+          style={{
+            width: (isConnecting || isAnimating) ? '60px' : '100%',
+            marginLeft: (isConnecting || isAnimating) ? 'auto' : '0'
+          }}
+          disabled={
+            (!gamePort && !isConnecting) ||
+            (isConnecting && !connectionCompleted)
+          }
+          onClick={handleButtonClick}
+        >
+          {isConnecting && !connectionCompleted ? (
+            <span className="connecting-spinner">⏳</span>
+          ) : isConnecting && !isAnimating && connectionCompleted ? (
+            "✕"
+          ) : (
+            "🚀 开始连接"
+          )}
+        </button>
       </div>
     </div>
   );

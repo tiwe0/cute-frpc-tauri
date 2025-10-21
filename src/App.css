@@ -260,7 +260,6 @@ body {
   background: rgba(240, 240, 240, 0.8);
   backdrop-filter: blur(5px);
   border: 3px solid rgba(42, 42, 42, 0.8);
-  border-right: none;
   font-family: 'FusionPixel', monospace;
   font-size: 14px;
   color: #2a2a2a;
@@ -346,21 +345,17 @@ body {
 }
 
 .connect-button.connecting:not(.waiting) {
-  width: 60px;
   padding: 16px 0;
   background: #e74c3c;
   font-size: 18px;
-  margin-left: auto; /* 收缩时靠右对齐 */
 }
 
 .connect-button.connecting.waiting {
-  width: 60px;
   padding: 16px 0;
   background: #f0f0f0;
   color: #888888;
   cursor: default;
   font-size: 16px;
-  margin-left: auto; /* 收缩时靠右对齐 */
   box-shadow: 
     3px 3px 0px #cccccc,
     6px 6px 0px #dddddd;
@@ -395,14 +390,7 @@ body {
       6px 6px 0px #bbbbbb;
   }
 
-  .connect-button.connecting.waiting {
-    background: #3a3a3a;
-    color: #888888;
-    border-color: #e0e0e0;
-    box-shadow: 
-      3px 3px 0px #e0e0e0,
-      6px 6px 0px #c0c0c0;
-  }/* 连接等待状态样式 */
+/* 连接等待状态样式 */
 .connect-button.connecting.waiting {
   display: flex;
   justify-content: center;
@@ -411,7 +399,8 @@ body {
 
 .connecting-spinner {
   font-size: 16px;
-  animation: spin 1s linear infinite;
+  animation: spin 2s linear infinite;
+  display: inline-block;
 }
 
 @keyframes spin {
