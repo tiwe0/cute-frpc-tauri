@@ -6,7 +6,7 @@ interface AudioPlayerProps {
 
 const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioRef }) => {
   return (
-    <audio ref={audioRef} loop preload="auto">
+    <audio ref={audioRef} preload="auto">
       <source src="/sound/music.mp3" type="audio/mpeg" />
       您的浏览器不支持音频播放。
     </audio>
