@@ -1,4 +1,3 @@
-import { resolveResource } from "@tauri-apps/api/path";
 import { exists, copyFile } from "@tauri-apps/plugin-fs";
 import { Command, Child } from "@tauri-apps/plugin-shell";
 import { APP_DEFAULT_FRPC_CONFIG_PATH, APP_FRPC_CONFIG_PATH } from "../utils/const";
@@ -31,7 +30,7 @@ export const createFRPCService = (): FRPCService => {
         
         const command = Command.sidecar("bin/frpc", [
           "-c",
-          await resolveResource("resources/default_config.toml"),
+          APP_FRPC_CONFIG_PATH
         ]);
         
         setTimeout(() => {
@@ -57,6 +56,10 @@ export const createFRPCService = (): FRPCService => {
         });
         
         command.stdout.on("data", (line) => {
+          if (line.includes("start proxy success")) {
+            onConnectionComplete();
+            onStatusChange("连接成功! 点击复制联机地址!");
+          }
           onLog(line, true); // 保留颜色
         });
         

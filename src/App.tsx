@@ -2,10 +2,10 @@ import "./App.css";
 import theGameListData from "./gamelist.json";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { resolveResource } from "@tauri-apps/api/path";
 import { Child } from "@tauri-apps/plugin-shell";
 import { exists, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import { APP_FRPC_CONFIG_PATH, APP_SAKURA_API_KEY_PATH } from "./utils/const";
+import { getCurrentWindow } from "@tauri-apps/api/window";
 
 // Components
 import {
@@ -267,12 +267,28 @@ function App() {
     // 这里从 SakuraFrpAPI 获取最新配置并保存到本地文件
     // 1. 先检查当前用户是否有隧道
     let tunnelsResponse = await sakuraFrpApi.getTunnels();
-    console.log("当前隧道列表:", tunnelsResponse);
-    // 2. 如果没有隧道，自动申请一个免费隧道
-    // 3. 如果有，那么根据用户配置修改隧道配置并保存
-    // 4. 从隧道获取frpc配置并保存到 APP_FRPC_CONFIG_PATH
+    let tunnelsArray = tunnelsResponse.data;
+    if (tunnelsArray.length === 0) {
+      // 2. 如果没有隧道，自动申请一个免费隧道
+      addLog("无隧道，正在申请免费隧道...");
 
-   }
+      // 重新获取隧道列表
+      let tunnelsResponse = await sakuraFrpApi.getTunnels();
+      tunnelsArray = tunnelsResponse.data;
+    } else {
+      addLog("找到已有隧道，准备使用第一条隧道...");
+    }
+
+    let tunnel = tunnelsArray[0];
+    // 3. 如果有，那么根据用户配置修改隧道配置并保存
+
+    // 4. 从隧道获取frpc配置并保存到 APP_FRPC_CONFIG_PATH
+    let frpcConfigResponse = await sakuraFrpApi.getTunnelConfig({ query: String(tunnel.id), frpc: "0.65.0" })
+    let frpcConfigContent = frpcConfigResponse.data;
+    await writeTextFile(APP_FRPC_CONFIG_PATH, frpcConfigContent);
+    handleConfigChange(FRPCConfig.fromTOML(frpcConfigContent));
+    addLog("已更新本地 FRPC 配置文件");
+  }
 
   // Connection handlers
   const handleConnect = async () => {
@@ -289,6 +305,8 @@ function App() {
     setShowLogger(true);
     setLoggerAnimating(true);
     
+    await updateSakuraFrpcConfigFile();
+
     // 延迟一点再添加第一条日志，让动画更自然
     setTimeout(() => {
       addLog(`开始连接到端口 ${gamePort}`);
@@ -312,6 +330,15 @@ function App() {
       }));
     }
   };
+
+  const killFRPCProcessIfExists = async () => {
+    if (FRPCProcessRef.current) {
+      await frpcService.stopConnection(FRPCProcessRef.current);
+      FRPCProcessRef.current = null;
+    }
+  }
+
+  getCurrentWindow().listen("tauri://destroyed", killFRPCProcessIfExists)
 
   const handleDisconnect = async () => {
     setConnectionState(prev => ({ ...prev, isAnimating: true }));

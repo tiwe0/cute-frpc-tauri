@@ -73,7 +73,7 @@
           "args": [
             "-c",
             {
-              "validator": "\\S+"
+              "validator": ".*"
             }
           ],
           "sidecar": true
