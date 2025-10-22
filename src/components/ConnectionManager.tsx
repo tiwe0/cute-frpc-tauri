@@ -25,6 +25,15 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
     }
   };
 
+  // 调试信息
+  console.log('ConnectionManager render:', { 
+    isConnecting, 
+    isAnimating, 
+    connectionCompleted,
+    shouldUseSmallWidth: (isConnecting || isAnimating),
+    buttonWidth: (isConnecting || isAnimating) ? '60px' : '100%'
+  });
+
   return (
     <div className="form-group">
       <div className="button-container">
@@ -46,7 +55,8 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
           }`}
           style={{
             width: (isConnecting || isAnimating) ? '60px' : '100%',
-            marginLeft: (isConnecting || isAnimating) ? 'auto' : '0'
+            marginLeft: (isConnecting || isAnimating) ? 'auto' : '0',
+            transition: 'width 0.3s ease-out, margin-left 0.3s ease-out'
           }}
           disabled={
             (!gamePort && !isConnecting) ||

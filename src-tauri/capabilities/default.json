@@ -49,6 +49,7 @@
         }
       ]
     },
+    "shell:allow-kill",
     {
       "identifier": "shell:allow-execute",
       "allow": [

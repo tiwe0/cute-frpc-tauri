@@ -1,7 +1,7 @@
 import "./App.css";
 import theGameListData from "./gamelist.json";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { resolveResource } from "@tauri-apps/api/path";
 import { Child } from "@tauri-apps/plugin-shell";
 import { exists, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
@@ -37,6 +37,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loginLoading, setLoginLoading] = useState(false);
   const [loginError, setLoginError] = useState<string>('');
+  const [autoLoginAttempted, setAutoLoginAttempted] = useState(false);
 
   // Game state
   const [gameList] = useState<Game[]>(theGameListData as Game[]);
@@ -171,7 +172,13 @@ function App() {
   };
 
   // Login handler
-  const handleLogin = async (apiKey: string) => {
+  const handleLogin = useCallback(async (apiKey: string) => {
+    // 防止重复登录
+    if (loginLoading || isAuthenticated) {
+      console.log("登录正在进行中或已经认证，跳过此次登录请求");
+      return;
+    }
+
     console.log("Attempting login with API Key:", apiKey);
     setLoginLoading(true);
     setLoginError('');
@@ -231,7 +238,7 @@ function App() {
     } finally {
       setLoginLoading(false);
     }
-  };
+  }, [loginLoading, isAuthenticated, setToken, getUserInfo, saveApiKey, initConfig]);
 
   // Game selection handler
   const handleGameSelect = (port: number, game: Game) => {
@@ -255,6 +262,17 @@ function App() {
     // 这里可以添加保存配置到文件的逻辑
     console.log('配置已更新:', config);
   };
+
+  const updateSakuraFrpcConfigFile = async () => {
+    // 这里从 SakuraFrpAPI 获取最新配置并保存到本地文件
+    // 1. 先检查当前用户是否有隧道
+    let tunnelsResponse = await sakuraFrpApi.getTunnels();
+    console.log("当前隧道列表:", tunnelsResponse);
+    // 2. 如果没有隧道，自动申请一个免费隧道
+    // 3. 如果有，那么根据用户配置修改隧道配置并保存
+    // 4. 从隧道获取frpc配置并保存到 APP_FRPC_CONFIG_PATH
+
+   }
 
   // Connection handlers
   const handleConnect = async () => {
@@ -301,21 +319,19 @@ function App() {
     await frpcService.stopConnection(FRPCProcessRef.current);
     FRPCProcessRef.current = null;
     
-    setConnectionState(prev => ({
-      ...prev,
-      connectionStatus: "",
-      connectionCompleted: false,
-    }));
     addLog("断开连接");
 
-    // 等待按钮动画完成后再重置状态
+    // 等待一个短暂的延迟后完全重置连接状态
     setTimeout(() => {
-      setConnectionState(prev => ({
-        ...prev,
-        isConnecting: false,
-        isAnimating: false,
-      }));
       addLog("连接已关闭");
+      
+      // 完全重置连接状态
+      setConnectionState({
+        isConnecting: false,
+        connectionStatus: "",
+        connectionCompleted: false,
+        isAnimating: false,
+      });
       
       // 延迟隐藏 logger，让用户能看到最后的状态
       setTimeout(() => {
@@ -331,16 +347,21 @@ function App() {
 
   // before login
   useEffect(() => {
-    // 尝试从配置中读取已保存的 API Key 并自动登录
-    // 这里假设有一个函数 loadSavedApiKey() 可以实现这个功能
-    const tryAutoLogin = async () => {
-      const savedApiKey = await loadSavedApiKey();
-      if (savedApiKey) {
-        handleLogin(savedApiKey);
-      }
-    };
-    tryAutoLogin();
-  }, []);
+    // 只在未尝试过自动登录且未认证时尝试自动登录
+    if (!autoLoginAttempted && !isAuthenticated) {
+      const tryAutoLogin = async () => {
+        setAutoLoginAttempted(true);
+        const savedApiKey = await loadSavedApiKey();
+        if (savedApiKey) {
+          console.log("找到保存的API Key，开始自动登录");
+          handleLogin(savedApiKey);
+        } else {
+          console.log("未找到保存的API Key");
+        }
+      };
+      tryAutoLogin();
+    }
+  }, [autoLoginAttempted, isAuthenticated, handleLogin]);
 
   // Effects
   useEffect(() => {
