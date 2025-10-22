@@ -1,15 +1,21 @@
 [
     {
-        "name": "Minecraft",
+        "name": "Minecraft(Java Edition)",
         "defaultPort": 25565,
         "background": "/assets/minecraft.png",
         "type": "tcp"
     },
     {
+        "name": "Minecraft(Bedrock Edition)",
+        "defaultPort": 19132,
+        "background": "/assets/minecraft.png",
+        "type": "udp"
+    },
+    {
         "name": "Terraria",
         "defaultPort": 7777,
         "background": "/assets/terraria.jpeg",
-        "type": "udp"
+        "type": "tcp"
     },
     {
         "name": "Stardew Valley",

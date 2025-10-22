@@ -159,6 +159,7 @@ export class SakuraFrpApiClient {
           // Token过期或无效，清除token
           this.token = null;
         }
+        console.error('API请求错误:', error);
         return Promise.reject(error);
       }
     );

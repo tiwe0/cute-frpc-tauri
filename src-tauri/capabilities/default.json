@@ -10,6 +10,7 @@
     "opener:default",
     "http:default",
     "clipboard-manager:default",
+    "clipboard-manager:allow-write-text",
     "fs:default",
     "shell:default",
     {

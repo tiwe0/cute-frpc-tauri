@@ -6,6 +6,7 @@ import { Child } from "@tauri-apps/plugin-shell";
 import { exists, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
 import { APP_FRPC_CONFIG_PATH, APP_SAKURA_API_KEY_PATH } from "./utils/const";
 import { getCurrentWindow } from "@tauri-apps/api/window";
+import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 
 // Components
 import {
@@ -42,6 +43,7 @@ function App() {
   // Game state
   const [gameList] = useState<Game[]>(theGameListData as Game[]);
   const [gamePort, setGamePort] = useState<number | null>(null);
+  const [currentGame, setCurrentGame] = useState<Game | null>(null);
 
   // Connection state
   const [connectionState, setConnectionState] = useState<ConnectionState>({
@@ -243,6 +245,7 @@ function App() {
   // Game selection handler
   const handleGameSelect = (port: number, game: Game) => {
     setGamePort(port);
+    setCurrentGame(game);
     if (game.background) {
       changeBackground(game.background);
     }
@@ -266,28 +269,62 @@ function App() {
   const updateSakuraFrpcConfigFile = async () => {
     // 这里从 SakuraFrpAPI 获取最新配置并保存到本地文件
     // 1. 先检查当前用户是否有隧道
+    if (!currentGame) { 
+      return;
+    }
+    let tunnelType = currentGame.type;
+
     let tunnelsResponse = await sakuraFrpApi.getTunnels();
-    let tunnelsArray = tunnelsResponse.data;
+    let tunnelsArray = tunnelsResponse.data.filter(t => t.type === tunnelType);
     if (tunnelsArray.length === 0) {
       // 2. 如果没有隧道，自动申请一个免费隧道
-      addLog("无隧道，正在申请免费隧道...");
+      addLog("无可用隧道，正在申请免费隧道...");
+      addLog("查看可用节点...");
 
+      let nodesResponse = await sakuraFrpApi.getNodes();
+      let nodesObject = nodesResponse.data;
+      let nodes = [];
+      for (let key in nodesObject) {
+        if (nodesObject[key].flag == 46 && nodesObject[key].vip == 0) {
+          nodes.push(Number(key));
+        }
+      }
+      console.log("可用节点列表:", nodes);
+      // 随机挑选一个
+      let nodeId = nodes[Math.floor(Math.random() * nodes.length)];
+      console.log("选择节点:", nodeId);
+
+      let createTunnelResponse = await sakuraFrpApi.createTunnel({
+        name: `bluelotus_${tunnelType}`, type: tunnelType, node: nodeId, local_ip: "127.0.0.1", local_port: currentGame.defaultPort
+      });
+      console.log("隧道创建结果:", createTunnelResponse.data);
+      await new Promise(resolve => setTimeout(resolve, 1000)); // 等待隧道创建稳定
       // 重新获取隧道列表
       let tunnelsResponse = await sakuraFrpApi.getTunnels();
-      tunnelsArray = tunnelsResponse.data;
+      tunnelsArray = tunnelsResponse.data.filter(t => t.type === tunnelType);
     } else {
-      addLog("找到已有隧道，准备使用第一条隧道...");
+      addLog("找到可用隧道，准备使用第一条隧道...");
     }
 
     let tunnel = tunnelsArray[0];
     // 3. 如果有，那么根据用户配置修改隧道配置并保存
+    addLog("修改隧道配置...")
+    let frpcEditResponse = await sakuraFrpApi.editTunnel({
+      id: tunnel.id, local_ip: "127.0.0.1", local_port: currentGame?.defaultPort
+    });
+    let frpcEditData = frpcEditResponse.data;
+    console.log("隧道编辑结果:", frpcEditData);
 
     // 4. 从隧道获取frpc配置并保存到 APP_FRPC_CONFIG_PATH
+    addLog("获取当前隧道配置文件...");
     let frpcConfigResponse = await sakuraFrpApi.getTunnelConfig({ query: String(tunnel.id), frpc: "0.65.0" })
     let frpcConfigContent = frpcConfigResponse.data;
     await writeTextFile(APP_FRPC_CONFIG_PATH, frpcConfigContent);
     handleConfigChange(FRPCConfig.fromTOML(frpcConfigContent));
+    let url = `${frpcConfig?.serverAddr}:${frpcConfig?.proxies[0]?.remotePort}`;
+    await writeText(url);
     addLog("已更新本地 FRPC 配置文件");
+    addLog(`联机地址已复制到粘贴板: ${url}`);
   }
 
   // Connection handlers

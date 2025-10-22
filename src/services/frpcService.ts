@@ -58,7 +58,7 @@ export const createFRPCService = (): FRPCService => {
         command.stdout.on("data", (line) => {
           if (line.includes("start proxy success")) {
             onConnectionComplete();
-            onStatusChange("连接成功! 点击复制联机地址!");
+            onStatusChange("连接成功! 联机地址已复制到粘贴板!");
           }
           onLog(line, true); // 保留颜色
         });
