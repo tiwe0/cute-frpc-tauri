@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "蓝联花",
+  "productName": "bluelotus",
   "version": "0.1.0",
   "identifier": "cafe.ivory.frpc",
   "build": {
