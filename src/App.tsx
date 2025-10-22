@@ -479,7 +479,7 @@ function App() {
         >
           <AudioPlayer audioRef={audioRef} />
 
-          <h1>蓝联花</h1>
+          <h1>蓝连哈</h1>
 
         <form className="form-container">
           <GameSelector

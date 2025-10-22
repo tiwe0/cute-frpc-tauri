@@ -8,7 +8,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenAdvancedSettings }) => {
   return (
     <footer className="footer-section">
       <div className="copyright-info">
-        <div className="copyright-text">© 2025 蓝联花 - 游戏联机工具</div>
+        <div className="copyright-text">© 2025 蓝连哈 - 游戏联机工具</div>
         <div className="copyright-text">
           📧 <a href="mailto:contact@ivory.cafe">contact@ivory.cafe</a>
         </div>
