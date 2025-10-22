@@ -2,13 +2,13 @@
     {
         "name": "Minecraft(Java Edition)",
         "defaultPort": 25565,
-        "background": "/assets/minecraft.png",
+        "background": "/assets/minecraft_java.png",
         "type": "tcp"
     },
     {
         "name": "Minecraft(Bedrock Edition)",
         "defaultPort": 19132,
-        "background": "/assets/minecraft.png",
+        "background": "/assets/minecraft_bedrock.png",
         "type": "udp"
     },
     {

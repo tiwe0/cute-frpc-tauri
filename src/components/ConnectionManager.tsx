@@ -1,5 +1,5 @@
 import React from 'react';
-import { ConnectionState, FRPCConfig } from '../types';
+import { ConnectionState } from '../types';
 
 interface ConnectionManagerProps {
   gamePort: number | null;

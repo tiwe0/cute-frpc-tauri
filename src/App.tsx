@@ -141,9 +141,6 @@ function App() {
         setIsLoading(false);
         setLoadingExiting(false);
         
-        // 设置默认背景
-        setCurrentBackground("/assets/default.jpg");
-        
         // 播放背景音乐
         if (audioRef.current) {
           audioRef.current.volume = 0.3; // 设置音量为30%
@@ -429,8 +426,9 @@ function App() {
 
   // Effects
   useEffect(() => {
-    // 只有在用户已认证时才初始化配置
-    // initConfig 将在登录成功后手动调用
+    // 设置默认背景
+    setCurrentBackground("/assets/default.jpg");
+
   }, []);
 
   // 当显示 logger 时，设置动画完成状态

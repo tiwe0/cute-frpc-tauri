@@ -47,7 +47,7 @@ jobs:
       - name: Install Tauri CLI globally
         run: pnpm add -g @tauri-apps/cli
 
-      - name: Build and Export Next.js
+      - name: Build
         run: pnpm build
 
       - name: Build Tauri APP
@@ -64,17 +64,19 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.BLUELOTUS }}
         with:
           tag_name: ${{ github.ref }}
           release_name: ${{ github.ref }}
           draft: false
           prerelease: false
+          owner: tiwe0
+          repo: bluelotus
 
       - name: Upload Release Assets
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.BLUELOTUS }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: src-tauri/target/release/bundle/**/*.*

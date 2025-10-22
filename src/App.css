@@ -1580,6 +1580,12 @@ button {
   animation: loadingFloat 3s ease-in-out infinite;
 }
 
+.loading-icon img {
+  width: 4rem;
+  height: 4rem;
+  object-fit: contain;
+}
+
 .loading-title {
   font-family: 'FusionPixel', monospace;
   font-size: 2.5rem;
@@ -1713,6 +1719,17 @@ button {
   font-weight: 600;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
   letter-spacing: 0.05rem;
+}
+
+.copyright-text a {
+  color: #e8e3d3;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.copyright-text a:hover {
+  color: #ffffff;
+  text-decoration: underline;
 }
 
 .contact-info {

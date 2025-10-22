@@ -12,7 +12,9 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ isLoading, loadingExiting
     <div className={`loading-screen ${loadingExiting ? "loading-exit" : ""}`}>
       <div className="loading-content">
         <div className="loading-logo">
-          <div className="loading-icon">🌸</div>
+          <div className="loading-icon">
+            <img src="/assets/icon.png" alt="蓝联花" />
+          </div>
           <h1 className="loading-title">蓝联花</h1>
         </div>
         <div className="loading-spinner">
