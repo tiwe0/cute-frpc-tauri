@@ -1,5 +1,7 @@
 import { resolveResource } from "@tauri-apps/api/path";
+import { exists, copyFile } from "@tauri-apps/plugin-fs";
 import { Command, Child } from "@tauri-apps/plugin-shell";
+import { APP_DEFAULT_FRPC_CONFIG_PATH, APP_FRPC_CONFIG_PATH } from "../utils/const";
 
 export interface FRPCService {
   startConnection: (
@@ -11,7 +13,17 @@ export interface FRPCService {
   stopConnection: (process: Child | null) => Promise<void>;
 }
 
+async function copyDefaultConfigIfNeeded() {
+  if (!(await exists(APP_FRPC_CONFIG_PATH))) {
+    await copyFile(APP_DEFAULT_FRPC_CONFIG_PATH, APP_FRPC_CONFIG_PATH);
+    console.log("已复制默认配置文件到:", APP_FRPC_CONFIG_PATH);
+  } else {
+    console.log("配置文件已存在，无需复制:", APP_FRPC_CONFIG_PATH);
+  }
+}
+
 export const createFRPCService = (): FRPCService => {
+  copyDefaultConfigIfNeeded();
   return {
     async startConnection(gamePort, onLog, onStatusChange, onConnectionComplete) {
       try {

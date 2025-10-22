@@ -24,20 +24,20 @@ export interface ConnectionState {
 class FPRCProxyConfig {
   name: string;
   type: "tcp" | "udp";
-  localIp: string;
+  localIP: string;
   localPort: number;
   remotePort: number;
 
   constructor(
     name: string,
     type: "tcp" | "udp",
-    localIp: string,
+    localIP: string,
     localPort: number,
     remotePort: number
   ) {
     this.name = name;
     this.type = type;
-    this.localIp = localIp;
+    this.localIP = localIP;
     this.localPort = localPort;
     this.remotePort = remotePort;
   }
@@ -67,11 +67,11 @@ export class FRPCConfig {
     for (const proxy of (parsed["proxies"] as any[]) || []) {
       const name = proxy["name"] as string;
       const type = proxy["type"] as "tcp" | "udp";
-      const localIp = proxy["localIp"] as string;
+      const localIP = proxy["localIP"] as string;
       const localPort = Number(proxy["localPort"]);
       const remotePort = Number(proxy["remotePort"]);
       proxies.push(
-        new FPRCProxyConfig(name, type, localIp, localPort, remotePort)
+        new FPRCProxyConfig(name, type, localIP, localPort, remotePort)
       );
     }
 
@@ -85,7 +85,7 @@ export class FRPCConfig {
       proxies: this.proxies.map((proxy) => ({
         name: proxy.name,
         type: proxy.type,
-        localIp: proxy.localIp,
+        localIP: proxy.localIP,
         localPort: proxy.localPort,
         remotePort: proxy.remotePort,
       })),

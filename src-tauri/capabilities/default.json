@@ -11,14 +11,33 @@
     "http:default",
     "clipboard-manager:default",
     "fs:default",
+    "shell:default",
     {
       "identifier": "fs:allow-exists",
       "allow": [
         {
-          "path": "$APPDATA/**"
+          "path": "$RESOURCE/**"
+        },
+        {
+          "path": "$APPCONFIG/**"
         }
       ]
     },
+    {
+      "identifier": "fs:allow-read",
+      "allow": [
+        {
+          "path": "$RESOURCE/**"
+        },
+        {
+          "path": "$APPCONFIG/**"
+        }
+      ]
+    },
+      "fs:allow-app-write",
+      "fs:allow-app-write-recursive",
+      "fs:allow-appcache-write",
+      "fs:allow-appcache-write-recursive",
     {
       "identifier": "fs:allow-copy-file",
       "allow": [
@@ -26,7 +45,7 @@
           "path": "$RESOURCE/**"
         },
         {
-          "path": "$APPDATA/**"
+          "path": "$APPCONFIG/**"
         }
       ]
     },
@@ -59,7 +78,6 @@
           "sidecar": true
         }
       ]
-    },
-    "shell:default"
+    }
   ]
 }

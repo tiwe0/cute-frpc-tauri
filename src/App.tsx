@@ -3,8 +3,9 @@ import theGameListData from "./gamelist.json";
 
 import { useState, useEffect, useRef } from "react";
 import { resolveResource } from "@tauri-apps/api/path";
-import { readTextFile } from "@tauri-apps/plugin-fs";
 import { Child } from "@tauri-apps/plugin-shell";
+import { exists, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
+import { APP_FRPC_CONFIG_PATH, APP_SAKURA_API_KEY_PATH } from "./utils/const";
 
 // Components
 import {
@@ -82,6 +83,29 @@ function App() {
   // Services
   const frpcService = createFRPCService();
 
+  const loadSavedApiKey = async (): Promise<string | null> => {
+    if(!(await exists(APP_SAKURA_API_KEY_PATH))) {
+      return null;
+    }
+    try {
+      const savedKey = await readTextFile(APP_SAKURA_API_KEY_PATH);
+      return savedKey.trim() || null;
+    } catch (error) {
+      console.error('Failed to read saved API Key:', error);
+      return null;
+    }
+  }
+
+  const saveApiKey = async (apiKey: string) => {
+    try {
+      await writeTextFile(APP_SAKURA_API_KEY_PATH, apiKey);
+      console.log('API Key 已保存');
+    } catch (error) {
+      console.error('Failed to save API Key:', error);
+    }
+  }
+
+
   // Initialization
   const initConfig = async () => {
     try {
@@ -90,8 +114,7 @@ function App() {
       
       // 加载 FRPC 配置
       try {
-        const resourcePath = await resolveResource('resources/default_config.toml');
-        const configContent = await readTextFile(resourcePath);
+        const configContent = await readTextFile(APP_FRPC_CONFIG_PATH);
         const config = FRPCConfig.fromTOML(configContent);
         setFrpcConfig(config);
         console.log('配置加载成功:', config);
@@ -125,8 +148,6 @@ function App() {
           });
         }
       }, 600);
-      
-      console.log('Config path:', await resolveResource('resources/default_config.toml'));
     } catch (error) {
       console.error('Failed to initialize config:', error);
       setLoadingExiting(true);
@@ -150,18 +171,31 @@ function App() {
 
   // Login handler
   const handleLogin = async (apiKey: string) => {
+    console.log("Attempting login with API Key:", apiKey);
     setLoginLoading(true);
     setLoginError('');
 
     try {
       // 模拟API Key验证
+      // TODO 这里登陆有点问题
       setToken(apiKey);
-      await getUserInfo();
+      setToken(apiKey);
+      // 这里需要调用3次，第一次登陆时会返回null，第二次才能拿到数据
+      let tries = 0;
+      do {
+        console.log("尝试获取用户信息，次数:", tries + 1);
+        await getUserInfo();
+        console.log("用户信息获取结果:", userInfo);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        tries++;
+      } while (!userInfo.data && tries < 3);
       console.log('User Info:', userInfo);
       
-      // 简单的API Key验证逻辑（实际项目中应该调用真实的API）
+      //API Key验证逻辑
       if (userInfo.data) {
         setIsAuthenticated(true);
+        // 登录成功，保存key
+        await saveApiKey(apiKey);
         // 登录成功后开始初始化
         initConfig();
       } else {
@@ -269,6 +303,19 @@ function App() {
       }, 1500); // 显示最终状态的时间
     }, 300); // 按钮动画持续时间
   };
+
+  // before login
+  useEffect(() => {
+    // 尝试从配置中读取已保存的 API Key 并自动登录
+    // 这里假设有一个函数 loadSavedApiKey() 可以实现这个功能
+    const tryAutoLogin = async () => {
+      const savedApiKey = await loadSavedApiKey();
+      if (savedApiKey) {
+        handleLogin(savedApiKey);
+      }
+    };
+    tryAutoLogin();
+  }, []);
 
   // Effects
   useEffect(() => {

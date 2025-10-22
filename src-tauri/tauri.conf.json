@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "cute-frpc-tauri",
+  "productName": "蓝联花",
   "version": "0.1.0",
-  "identifier": "com.ivory.cute-frpc-tauri",
+  "identifier": "cafe.ivory.frpc",
   "build": {
     "beforeDevCommand": "pnpm dev",
     "devUrl": "http://localhost:1420",
