@@ -30,6 +30,7 @@ import { Game, ConnectionState, FRPCConfig } from "./types";
 
 // Services
 import { createFRPCService } from "./services/frpcService";
+import { sakuraFrpApi } from "./services/sakuraFrpApiClient";
 
 function App() {
   // Authentication state
@@ -77,7 +78,7 @@ function App() {
   } = useLogger();
 
   const {
-    setToken, userInfo, getUserInfo
+    setToken, getUserInfo
   } = useSakuraFrpApi();
 
   // Services
@@ -176,32 +177,56 @@ function App() {
     setLoginError('');
 
     try {
-      // 模拟API Key验证
-      // TODO 这里登陆有点问题
+      // 设置token（同步操作）
       setToken(apiKey);
-      setToken(apiKey);
-      // 这里需要调用3次，第一次登陆时会返回null，第二次才能拿到数据
+      
+      // 尝试获取用户信息来验证token
       let tries = 0;
+      let userInfoResult = null;
+      
       do {
         console.log("尝试获取用户信息，次数:", tries + 1);
-        await getUserInfo();
-        console.log("用户信息获取结果:", userInfo);
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        try {
+          // 直接调用API验证token
+          const response = await sakuraFrpApi.getUserInfo();
+          userInfoResult = response.data;
+          console.log("用户信息获取结果:", userInfoResult);
+          
+          if (userInfoResult) {
+            break; // 成功获取到数据，跳出循环
+          }
+        } catch (apiError: any) {
+          console.error("API调用失败:", apiError);
+          // 如果是401错误，说明token无效，直接退出重试循环
+          if (apiError.response?.status === 401) {
+            console.log("Token无效，停止重试");
+            break;
+          }
+        }
+        
+        // 网络错误等其他情况，等待后重试
+        if (tries < 2) {
+          console.log("等待500ms后重试...");
+          await new Promise(resolve => setTimeout(resolve, 500));
+        }
         tries++;
-      } while (!userInfo.data && tries < 3);
-      console.log('User Info:', userInfo);
+      } while (tries < 3);
       
-      //API Key验证逻辑
-      if (userInfo.data) {
+      // 验证登录结果
+      if (userInfoResult) {
         setIsAuthenticated(true);
         // 登录成功，保存key
         await saveApiKey(apiKey);
+        // 刷新Hook状态以同步数据
+        await getUserInfo();
+        console.log("登录成功，用户信息:", userInfoResult);
         // 登录成功后开始初始化
         initConfig();
       } else {
-        setLoginError('无效的 API Key，请检查后重试');
+        setLoginError('无效的 API Key 或网络连接问题，请检查后重试');
       }
     } catch (error) {
+      console.error("登录过程中出现错误:", error);
       setLoginError('验证失败，请稍后重试');
     } finally {
       setLoginLoading(false);
