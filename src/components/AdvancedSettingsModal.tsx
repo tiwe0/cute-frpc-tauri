@@ -130,12 +130,6 @@ const AdvancedSettingsModal: React.FC<AdvancedSettingsModalProps> = ({
             </button>
           </div>
 
-          <div className="settings-section">
-            <h3>📋 配置信息</h3>
-            <div className="config-preview">
-              <pre>{frpcConfig?.toTOML() || '加载中...'}</pre>
-            </div>
-          </div>
         </div>
 
         <div className="modal-footer">
