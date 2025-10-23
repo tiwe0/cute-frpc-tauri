@@ -14,11 +14,11 @@ const Footer: React.FC<FooterProps> = ({ onOpenAdvancedSettings }) => {
         </div>
         <div className="copyright-text">
           💻 <a
-            href="https://github.com/tiwe0/bluelotus"
+            href="https://github.com/tiwe0/cute-frpc-tauri"
             target="_blank"
             rel="noopener noreferrer"
           >
-            https://github.com/tiwe0/bluelotus
+            https://github.com/tiwe0/cute-frpc-tauri
           </a>
         </div>
         <div

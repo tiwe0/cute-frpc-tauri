@@ -19,8 +19,8 @@
 
 <div align="center">
 
-[![Download](https://img.shields.io/badge/📦%20下载-最新版本-blue?style=for-the-badge&logo=github)](https://github.com/tiwe0/bluelotus/releases)
-[![Stars](https://img.shields.io/github/stars/tiwe0/bluelotus?style=for-the-badge&logo=github&color=yellow)](https://github.com/tiwe0/bluelotus)
+[![Download](https://img.shields.io/badge/📦%20下载-最新版本-blue?style=for-the-badge&logo=github)](https://github.com/tiwe0/cute-frpc-tauri/releases)
+[![Stars](https://img.shields.io/github/stars/tiwe0/cute-frpc-tauri?style=for-the-badge&logo=github&color=yellow)](https://github.com/tiwe0/cute-frpc-tauri)
 
 </div>
 
@@ -82,7 +82,7 @@ graph TB
 </div>
 
 ## 软件获取
-从 [发布页面](https://github.com/tiwe0/bluelotus/releases) 下载最新版本的蓝连哈
+从 [发布页面](https://github.com/tiwe0/cute-frpc-tauri/releases) 下载最新版本的蓝连哈
 
 
 ## 🚀 快速开始
