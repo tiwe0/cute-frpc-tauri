@@ -13,9 +13,9 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ isLoading, loadingExiting
       <div className="loading-content">
         <div className="loading-logo">
           <div className="loading-icon">
-            <img src="/assets/icon.png" alt="蓝联花" />
+            <img src="/assets/icon.png" alt="蓝连哈" />
           </div>
-          <h1 className="loading-title">蓝联花</h1>
+          <h1 className="loading-title">蓝连哈</h1>
         </div>
         <div className="loading-spinner">
           <div className="spinner-ring"></div>

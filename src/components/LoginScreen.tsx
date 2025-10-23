@@ -26,8 +26,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
       <div className="login-content">
         <div className="login-header">
           <div className="login-logo">
-            <img src="/assets/icon.png" alt="蓝联花" className="login-icon" />
-            <h1 className="login-title">蓝联花</h1>
+            <img src="/assets/icon.png" alt="蓝连哈" className="login-icon" />
+            <h1 className="login-title">蓝连哈</h1>
           </div>
           <p className="login-subtitle">游戏联机工具</p>
         </div>
