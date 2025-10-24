@@ -1,5 +1,4 @@
 import "./App.css";
-import theGameListData from "./gamelist.json";
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Child } from "@tauri-apps/plugin-shell";
@@ -425,6 +424,38 @@ function App() {
     }, 300); // 按钮动画持续时间
   };
 
+  const handleGameDelete = async (gameToDelete: Game) => {
+    try {
+      // 从游戏列表中移除指定游戏
+      const updatedGameList = gameList.filter(game => 
+        !(game.name === gameToDelete.name && 
+          game.defaultPort === gameToDelete.defaultPort && 
+          game.type === gameToDelete.type)
+      );
+      
+      // 更新状态
+      setGameList(updatedGameList);
+      
+      // 如果删除的是当前选中的游戏，重置相关状态
+      if (currentGame && 
+          currentGame.name === gameToDelete.name && 
+          currentGame.defaultPort === gameToDelete.defaultPort && 
+          currentGame.type === gameToDelete.type) {
+        setCurrentGame(null);
+        setGamePort(null);
+        // 切换回默认背景
+        changeBackground('/assets/default.jpg');
+      }
+      
+      // 保存更新后的游戏列表到文件
+      await writeTextFile(APP_GAMELIST_PATH, JSON.stringify(updatedGameList, null, 2));
+      console.log('游戏配置已删除并保存到文件:', gameToDelete);
+      
+    } catch (error) {
+      console.error('删除游戏配置失败:', error);
+    }
+  }
+
   // before login
   useEffect(() => {
     // 只在未尝试过自动登录且未认证时尝试自动登录
@@ -506,6 +537,7 @@ function App() {
             gameList={gameList}
             isConnecting={connectionState.isConnecting}
             onGameSelect={handleGameSelect}
+            onGameDelete={handleGameDelete}
           />
 
           <ConnectionManager
