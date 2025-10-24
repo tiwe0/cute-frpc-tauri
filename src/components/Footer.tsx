@@ -26,7 +26,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenAdvancedSettings }) => {
           onClick={onOpenAdvancedSettings}
           title="点击打开高级设置"
         >
-          v0.1.0 | Made with ❤️ by Ivory
+          v0.2.5 | Made with ❤️ by Ivory
         </div>
       </div>
     </footer>
