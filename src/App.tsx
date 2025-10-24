@@ -3,8 +3,8 @@ import theGameListData from "./gamelist.json";
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Child } from "@tauri-apps/plugin-shell";
-import { exists, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
-import { APP_FRPC_CONFIG_PATH, APP_SAKURA_API_KEY_PATH } from "./utils/const";
+import { copyFile, exists, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
+import { APP_FRPC_CONFIG_PATH, APP_SAKURA_API_KEY_PATH, APP_GAMELIST_PATH, APP_DEFAULT_GAMELIST_PATH } from "./utils/const";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { writeText } from '@tauri-apps/plugin-clipboard-manager';
 
@@ -41,7 +41,7 @@ function App() {
   const [autoLoginAttempted, setAutoLoginAttempted] = useState(false);
 
   // Game state
-  const [gameList] = useState<Game[]>(theGameListData as Game[]);
+  const [gameList, setGameList] = useState<Game[]>([]);
   const [gamePort, setGamePort] = useState<number | null>(null);
   const [currentGame, setCurrentGame] = useState<Game | null>(null);
 
@@ -115,7 +115,26 @@ function App() {
     try {
       // 模拟加载时间
       await new Promise(resolve => setTimeout(resolve, 2500));
-      
+
+      // 加载游戏列表
+      if (!(await exists(APP_GAMELIST_PATH))) {
+        // 如果游戏列表文件不存在，复制默认文件
+        await copyFile(APP_DEFAULT_GAMELIST_PATH, APP_GAMELIST_PATH);
+        console.log("已复制默认游戏列表到:", APP_GAMELIST_PATH);
+      }
+
+      try {
+        const gamelistContent = await readTextFile(APP_GAMELIST_PATH);
+        const gameList = JSON.parse(gamelistContent);
+        setGameList(gameList);
+        console.log('游戏列表加载成功:', gameList);
+      } catch (gamelistError) {
+        console.warn('游戏列表加载失败，使用默认游戏列表:', gamelistError);
+        // 设置默认游戏列表
+        const defaultGameList = JSON.parse(await readTextFile(APP_DEFAULT_GAMELIST_PATH)) as Game[];
+        setGameList(defaultGameList);
+      }
+
       // 加载 FRPC 配置
       try {
         const configContent = await readTextFile(APP_FRPC_CONFIG_PATH);
@@ -508,6 +527,7 @@ function App() {
         {/* 高级设置弹窗 */}
         <AdvancedSettingsModal
           isOpen={showAdvancedSettings}
+          gameList={gameList}
           onClose={handleCloseAdvancedSettings}
           frpcConfig={frpcConfig}
           onConfigChange={handleConfigChange}

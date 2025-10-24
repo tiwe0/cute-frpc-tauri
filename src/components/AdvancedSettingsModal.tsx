@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { FRPCConfig } from '../types';
+import { FRPCConfig, Game } from '../types';
+import { APP_GAMELIST_PATH } from '../utils/const';
+import { writeTextFile } from '@tauri-apps/plugin-fs';
 
 interface AdvancedSettingsModalProps {
   isOpen: boolean;
+  gameList: Game[];
   onClose: () => void;
   frpcConfig: FRPCConfig | null;
   onConfigChange: (config: FRPCConfig) => void;
@@ -10,6 +13,7 @@ interface AdvancedSettingsModalProps {
 
 const AdvancedSettingsModal: React.FC<AdvancedSettingsModalProps> = ({
   isOpen,
+  gameList,
   onClose,
   frpcConfig,
   onConfigChange,
@@ -27,7 +31,7 @@ const AdvancedSettingsModal: React.FC<AdvancedSettingsModalProps> = ({
     }
   }, [frpcConfig]);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!frpcConfig) return;
 
     const newConfig = new FRPCConfig(
@@ -37,11 +41,18 @@ const AdvancedSettingsModal: React.FC<AdvancedSettingsModalProps> = ({
     );
 
     onConfigChange(newConfig);
+    await writeTextFile(APP_GAMELIST_PATH, JSON.stringify(gameList, null, 2));
     onClose();
   };
 
   const handleAddCustomGame = () => {
     if (!customGameName.trim()) return;
+
+    gameList.push({
+      name: customGameName.trim(),
+      defaultPort: customPort,
+      type: protocolType,
+    });
 
     // 这里可以添加自定义游戏的逻辑
     // 暂时只是关闭弹窗

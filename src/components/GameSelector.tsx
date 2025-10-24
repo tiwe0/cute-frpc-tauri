@@ -39,7 +39,7 @@ const GameSelector: React.FC<GameSelectorProps> = ({
         </option>
         {gameList.map((game) => (
           <option key={game.defaultPort} value={game.defaultPort}>
-            {game.name} (端口: {game.defaultPort})
+            {game.name} (端口: {game.defaultPort}) <button style={{fontSize: '0.8em'}}>×</button>
           </option>
         ))}
       </select>
