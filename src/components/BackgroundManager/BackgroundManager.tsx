@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './BackgroundManager.module.css';
 
 interface BackgroundManagerProps {
   currentBackground: string;
@@ -11,8 +12,8 @@ const BackgroundManager: React.FC<BackgroundManagerProps> = ({
   return (
     <>
       <div
-        className={`background-image ${
-          currentBackground ? "background-visible" : ""
+        className={`${styles.backgroundImage} ${
+          currentBackground ? styles.backgroundVisible : ""
         }`}
         style={{
           backgroundImage: currentBackground
@@ -20,7 +21,7 @@ const BackgroundManager: React.FC<BackgroundManagerProps> = ({
             : "none",
         }}
       />
-      <div className="background-overlay" />
+      <div className={styles.backgroundOverlay} />
     </>
   );
 };

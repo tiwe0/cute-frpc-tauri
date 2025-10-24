@@ -1,5 +1,6 @@
 import React from 'react';
-import { ConnectionState } from '../types';
+import { ConnectionState } from '../../types';
+import styles from './ConnectionManager.module.css';
 
 interface ConnectionManagerProps {
   gamePort: number | null;
@@ -35,22 +36,22 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
   });
 
   return (
-    <div className="form-group">
-      <div className="button-container">
+    <div className={styles.formGroup}>
+      <div className={styles.buttonContainer}>
         {(isConnecting || isAnimating) && (
           <div
-            className={`status-display ${isAnimating ? "slideOut" : ""}`}
+            className={`${styles.statusDisplay} ${isAnimating ? styles.slideOut : ""}`}
           >
-            <span className="status-text">{connectionStatus}</span>
+            <span className={styles.statusText}>{connectionStatus}</span>
           </div>
         )}
         <button
           type="button"
-          className={`connect-button ${
+          className={`${styles.connectButton} ${
             isConnecting && !connectionCompleted
-              ? "connecting waiting"
+              ? `${styles.connecting} ${styles.waiting}`
               : isConnecting && connectionCompleted
-              ? "connecting"
+              ? styles.connecting
               : ""
           }`}
           style={{
@@ -65,7 +66,7 @@ const ConnectionManager: React.FC<ConnectionManagerProps> = ({
           onClick={handleButtonClick}
         >
           {isConnecting && !connectionCompleted ? (
-            <span className="connecting-spinner">⏳</span>
+            <span className={styles.connectingSpinner}>⏳</span>
           ) : isConnecting && !isAnimating && connectionCompleted ? (
             "✕"
           ) : (

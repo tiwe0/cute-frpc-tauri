@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
-import { LogEntry } from '../types';
+import { LogEntry } from '../../types';
+import styles from './Logger.module.css';
 
 interface LoggerProps {
   logs: LogEntry[];
@@ -20,17 +21,17 @@ const Logger: React.FC<LoggerProps> = ({ logs, showLogger, loggerAnimating }) =>
 
   return (
     <div
-      className={`form-group logger-form-group ${
-        loggerAnimating ? "logger-slide-in" : "logger-slide-out"
+      className={`${styles.loggerFormGroup} ${
+        loggerAnimating ? styles.loggerSlideIn : styles.loggerSlideOut
       }`}
     >
-      <div className="logger-container">
-        <div className="logger-content">
+      <div className={styles.loggerContainer}>
+        <div className={styles.loggerContent}>
           {logs.length === 0 ? (
-            <div className="no-logs">正在初始化...</div>
+            <div className={styles.noLogs}>正在初始化...</div>
           ) : (
             logs.map((log) => (
-              <div key={log.id} className="log-entry">
+              <div key={log.id} className={styles.logEntry}>
                 {log.hasColors ? (
                   <span
                     dangerouslySetInnerHTML={{ __html: log.content }}

@@ -1,0 +1,59 @@
+/* 全局字体和基础样式 */
+@font-face {
+  font-family: 'FusionPixel';
+  src: url('/fonts/fusion-pixel-12px-monospaced-zh_hans.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  font-family: 'FusionPixel', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 28px;
+  font-weight: 400;
+
+  color: #2a2a2a;
+  background: 
+    repeating-conic-gradient(#f0f0f0 0% 25%, #e8e8e8 25% 50%) 
+    50% / 20px 20px;
+
+  font-synthesis: none;
+  text-rendering: pixelated;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  -webkit-text-size-adjust: 100%;
+  image-rendering: pixelated;
+}
+
+/* 禁用所有滚动条 */
+html {
+  overflow: hidden;
+}
+
+body {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+
+/* 隐藏 webkit 浏览器的滚动条 */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* 隐藏所有元素的滚动条但保持滚动功能 */
+* {
+  -ms-overflow-style: none;  /* IE 和 Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* 暗色模式 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #e0e0e0;
+    background: 
+      repeating-conic-gradient(#1a1a1a 0% 25%, #2a2a2a 25% 50%) 
+      50% / 20px 20px;
+  }
+}

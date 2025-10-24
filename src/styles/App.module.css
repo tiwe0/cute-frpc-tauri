@@ -1,0 +1,142 @@
+/* App 主布局样式 */
+.container {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.container::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(90deg, transparent 50%, rgba(255,255,255,0.03) 50%),
+    linear-gradient(rgba(255,255,255,0.03) 50%, transparent 50%);
+  background-size: 2px 2px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container.backgroundTransition .backgroundImage {
+  opacity: 0;
+}
+
+.contentWrapper {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100vh;
+  max-width: 500px;
+  margin: 0 auto;
+  position: relative;
+  box-sizing: border-box;
+  gap: 20px;
+  z-index: 1;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 400px;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(20px);
+  border: 4px solid rgba(42, 42, 42, 0.6);
+  border-radius: 0;
+  padding: 24px;
+  box-shadow: 
+    4px 4px 0px rgba(102, 102, 102, 0.4),
+    8px 8px 0px rgba(153, 153, 153, 0.3),
+    0 0 20px rgba(0, 0, 0, 0.25);
+  position: relative;
+  z-index: 2;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.formContainer::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: #ffffff;
+  border: 2px solid #cccccc;
+  z-index: -1;
+}
+
+.appTitle {
+  text-align: center;
+  font-size: 32px;
+  font-weight: normal;
+  color: #ffffff;
+  margin-bottom: 30px;
+  font-family: 'FusionPixel', monospace;
+  text-shadow: 
+    2px 2px 0px #000000,
+    4px 4px 0px #333333,
+    0 0 10px rgba(0, 0, 0, 0.5);
+  position: relative;
+  z-index: 2;
+}
+
+/* 内容区域过渡 */
+.contentHidden {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  filter: blur(2px);
+  transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.contentVisible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+  transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s;
+}
+
+/* 暗色模式 */
+@media (prefers-color-scheme: dark) {
+  .container::before {
+    background: 
+      linear-gradient(90deg, transparent 50%, rgba(255,255,255,0.02) 50%),
+      linear-gradient(rgba(255,255,255,0.02) 50%, transparent 50%);
+  }
+
+  .formContainer {
+    background: rgba(42, 42, 42, 0.55);
+    backdrop-filter: blur(20px);
+    border-color: rgba(224, 224, 224, 0.6);
+    box-shadow: 
+      4px 4px 0px rgba(26, 26, 26, 0.4),
+      8px 8px 0px rgba(10, 10, 10, 0.3),
+      0 0 20px rgba(255, 255, 255, 0.15);
+  }
+
+  .formContainer::before {
+    background: rgba(42, 42, 42, 0.55);
+    border-color: rgba(74, 74, 74, 0.6);
+  }
+
+  .appTitle {
+    color: #e0e0e0;
+    text-shadow: 
+      2px 2px 0px #000000,
+      4px 4px 0px #333333,
+      0 0 10px rgba(255, 255, 255, 0.3);
+  }
+}

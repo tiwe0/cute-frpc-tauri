@@ -1,0 +1,150 @@
+/* Logger 组件样式 */
+.loggerContainer {
+  width: 100%;
+  background: rgba(240, 240, 240, 0.8);
+  backdrop-filter: blur(5px);
+  border: 2px solid rgba(42, 42, 42, 0.7);
+  border-radius: 0;
+  box-shadow: 
+    inset 2px 2px 0px rgba(224, 224, 224, 0.7),
+    inset -2px -2px 0px rgba(255, 255, 255, 0.7);
+  min-height: 120px;
+  max-height: 200px;
+}
+
+.loggerContent {
+  height: 100%;
+  overflow-y: auto;
+  padding: 12px;
+  background: transparent;
+  font-family: 'FusionPixel', monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  box-sizing: border-box;
+}
+
+.loggerContent::-webkit-scrollbar {
+  width: 8px;
+}
+
+.loggerContent::-webkit-scrollbar-track {
+  background: #e0e0e0;
+  border: 1px solid #2a2a2a;
+}
+
+.loggerContent::-webkit-scrollbar-thumb {
+  background: #999999;
+  border: 1px solid #2a2a2a;
+}
+
+.loggerContent::-webkit-scrollbar-thumb:hover {
+  background: #777777;
+}
+
+.noLogs {
+  text-align: center;
+  color: #888888;
+  font-style: italic;
+  padding: 20px;
+}
+
+.logEntry {
+  padding: 4px 0;
+  color: #2a2a2a;
+  border-bottom: 1px solid #e0e0e0;
+  word-wrap: break-word;
+  word-break: break-all;
+  line-height: 1.4;
+}
+
+.logEntry span {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.logEntry:last-child {
+  border-bottom: none;
+}
+
+/* Logger 动画 */
+.loggerFormGroup {
+  overflow: hidden;
+}
+
+.loggerFormGroup.loggerSlideIn {
+  animation: loggerSlideIn 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+.loggerFormGroup.loggerSlideOut {
+  animation: loggerSlideOut 0.3s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+@keyframes loggerSlideIn {
+  0% {
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    max-height: 200px;
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes loggerSlideOut {
+  0% {
+    max-height: 200px;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+/* 暗色模式 */
+@media (prefers-color-scheme: dark) {
+  .loggerContainer {
+    background: rgba(58, 58, 58, 0.8);
+    backdrop-filter: blur(5px);
+    border-color: rgba(224, 224, 224, 0.7);
+    box-shadow: 
+      inset 2px 2px 0px rgba(42, 42, 42, 0.7),
+      inset -2px -2px 0px rgba(74, 74, 74, 0.7);
+  }
+
+  .loggerContent {
+    background: transparent;
+  }
+
+  .loggerContent::-webkit-scrollbar-track {
+    background: #2a2a2a;
+    border-color: #e0e0e0;
+  }
+
+  .loggerContent::-webkit-scrollbar-thumb {
+    background: #666666;
+    border-color: #e0e0e0;
+  }
+
+  .loggerContent::-webkit-scrollbar-thumb:hover {
+    background: #888888;
+  }
+
+  .noLogs {
+    color: #888888;
+  }
+
+  .logEntry {
+    color: #e0e0e0;
+    border-color: #3a3a3a;
+  }
+
+  .logEntry span {
+    font-family: inherit;
+    font-size: inherit;
+  }
+}

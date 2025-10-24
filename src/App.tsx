@@ -1,4 +1,5 @@
-import "./App.css";
+import "./styles/globals.css";
+import styles from "./styles/App.module.css";
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Child } from "@tauri-apps/plugin-shell";
@@ -494,8 +495,8 @@ function App() {
 
   return (
     <main
-      className={`container ${
-        backgroundTransition ? "background-transition" : ""
+      className={`${styles.container} ${
+        backgroundTransition ? styles.backgroundTransition : ""
       }`}
     >
       <BackgroundManager
@@ -523,15 +524,15 @@ function App() {
       {/* 主界面内容 - 只在已登录且加载完成时显示 */}
       {isAuthenticated && (
         <div
-          className={`content-wrapper ${
-            isLoading ? "content-hidden" : "content-visible"
+          className={`${styles.contentWrapper} ${
+            isLoading ? styles.contentHidden : styles.contentVisible
           }`}
         >
           <AudioPlayer audioRef={audioRef} />
 
-          <h1>蓝连哈</h1>
+          <h1 className={styles.appTitle}>蓝连哈</h1>
 
-        <form className="form-container">
+        <form className={styles.formContainer}>
           <GameSelector
             currentGame={currentGame}
             gameList={gameList}

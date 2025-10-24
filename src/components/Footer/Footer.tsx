@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './Footer.module.css';
 
 interface FooterProps {
   onOpenAdvancedSettings?: () => void;
@@ -6,13 +7,13 @@ interface FooterProps {
 
 const Footer: React.FC<FooterProps> = ({ onOpenAdvancedSettings }) => {
   return (
-    <footer className="footer-section">
-      <div className="copyright-info">
-        <div className="copyright-text">© 2025 蓝连哈 - 游戏联机工具</div>
-        <div className="copyright-text">
+    <footer className={styles.footerSection}>
+      <div className={styles.copyrightInfo}>
+        <div className={styles.copyrightText}>© 2025 蓝连哈 - 游戏联机工具</div>
+        <div className={styles.copyrightText}>
           📧 <a href="mailto:contact@ivory.cafe">contact@ivory.cafe</a>
         </div>
-        <div className="copyright-text">
+        <div className={styles.copyrightText}>
           💻 <a
             href="https://github.com/tiwe0/cute-frpc-tauri"
             target="_blank"
@@ -22,7 +23,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenAdvancedSettings }) => {
           </a>
         </div>
         <div
-          className="copyright-text version-clickable"
+          className={`${styles.copyrightText} ${styles.versionClickable}`}
           onClick={onOpenAdvancedSettings}
           title="点击打开高级设置"
         >

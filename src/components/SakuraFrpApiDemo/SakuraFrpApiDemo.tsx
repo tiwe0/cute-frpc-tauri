@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import useSakuraFrpApi from '../hooks/useSakuraFrpApi';
-import { CreateTunnelRequest } from '../services/sakuraFrpApiClient';
+import useSakuraFrpApi from '../../hooks/useSakuraFrpApi';
+import { CreateTunnelRequest } from '../../services/sakuraFrpApiClient';
 
 /**
  * SakuraFrp API 客户端示例组件

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styles from './LoginScreen.module.css';
 
 interface LoginScreenProps {
   onLogin: (apiKey: string) => void;
@@ -20,21 +21,20 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
     }
   };
 
-
   return (
-    <div className="login-screen">
-      <div className="login-content">
-        <div className="login-header">
-          <div className="login-logo">
-            <img src="/assets/icon.png" alt="蓝连哈" className="login-icon" />
-            <h1 className="login-title">蓝连哈</h1>
+    <div className={styles.loginScreen}>
+      <div className={styles.loginContent}>
+        <div className={styles.loginHeader}>
+          <div className={styles.loginLogo}>
+            <img src="/assets/icon.png" alt="蓝连哈" className={styles.loginIcon} />
+            <h1 className={styles.loginTitle}>蓝连哈</h1>
           </div>
-          <p className="login-subtitle">游戏联机工具</p>
+          <p className={styles.loginSubtitle}>游戏联机工具</p>
         </div>
 
-        <form className="login-form" onSubmit={handleSubmit}>
-          <div className="login-form-group">
-            <label htmlFor="api-key" className="login-label">
+        <form className={styles.loginForm} onSubmit={handleSubmit}>
+          <div className={styles.loginFormGroup}>
+            <label htmlFor="api-key" className={styles.loginLabel}>
               API Key
             </label>
             <input
@@ -43,21 +43,21 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
               placeholder="请输入您的 API Key"
-              className="login-input"
+              className={styles.loginInput}
               disabled={isLoading}
               autoFocus
             />
-            {error && <div className="login-error">{error}</div>}
+            {error && <div className={styles.loginError}>{error}</div>}
           </div>
 
           <button
             type="submit"
-            className="login-button"
+            className={styles.loginButton}
             disabled={isLoading || !apiKey.trim()}
           >
             {isLoading ? (
               <>
-                <span className="login-spinner">⏳</span>
+                <span className={styles.loginSpinner}>⏳</span>
                 验证中...
               </>
             ) : (
@@ -66,8 +66,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
           </button>
         </form>
 
-        <div className="login-footer">
-          <p className="login-help">请联系管理员获取 API Key</p>
+        <div className={styles.loginFooter}>
+          <p className={styles.loginHelp}>请联系管理员获取 API Key</p>
         </div>
       </div>
     </div>

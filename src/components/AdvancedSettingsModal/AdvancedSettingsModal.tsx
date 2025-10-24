@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { FRPCConfig, Game } from '../types';
-import { APP_GAMELIST_PATH } from '../utils/const';
+import { FRPCConfig, Game } from '../../types';
+import { APP_GAMELIST_PATH } from '../../utils/const';
 import { writeTextFile } from '@tauri-apps/plugin-fs';
+import styles from './AdvancedSettingsModal.module.css';
+import sharedStyles from '../../styles/shared.module.css';
 
 interface AdvancedSettingsModalProps {
   isOpen: boolean;
@@ -62,78 +64,78 @@ const AdvancedSettingsModal: React.FC<AdvancedSettingsModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
+    <div className={styles.modalOverlay} onClick={onClose}>
+      <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.modalHeader}>
           <h2>⚙️ 高级设置</h2>
-          <button className="modal-close" onClick={onClose}>
+          <button className={styles.modalClose} onClick={onClose}>
             ✕
           </button>
         </div>
 
-        <div className="modal-body">
-          <div className="settings-section">
+        <div className={styles.modalBody}>
+          <div className={styles.settingsSection}>
             <h3>🌐 服务器设置</h3>
-            <div className="form-group">
-              <label htmlFor="server-addr" className="form-label">服务器地址:</label>
+            <div className={sharedStyles.formGroup}>
+              <label htmlFor="server-addr" className={sharedStyles.formLabel}>服务器地址:</label>
               <input
                 id="server-addr"
                 type="text"
                 value={serverAddr}
                 onChange={(e) => setServerAddr(e.target.value)}
                 placeholder="frp.example.com"
-                className="modal-form-input"
+                className={styles.modalFormInput}
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="server-port" className="form-label">服务器端口:</label>
+            <div className={sharedStyles.formGroup}>
+              <label htmlFor="server-port" className={sharedStyles.formLabel}>服务器端口:</label>
               <input
                 id="server-port"
                 type="number"
                 value={serverPort}
                 onChange={(e) => setServerPort(Number(e.target.value))}
-                className="modal-form-input"
+                className={styles.modalFormInput}
               />
             </div>
           </div>
 
-          <div className="settings-section">
+          <div className={styles.settingsSection}>
             <h3>🎮 自定义游戏</h3>
-            <div className="form-group">
-              <label htmlFor="custom-game-name" className="form-label">游戏名称:</label>
+            <div className={sharedStyles.formGroup}>
+              <label htmlFor="custom-game-name" className={sharedStyles.formLabel}>游戏名称:</label>
               <input
                 id="custom-game-name"
                 type="text"
                 value={customGameName}
                 onChange={(e) => setCustomGameName(e.target.value)}
                 placeholder="输入游戏名称"
-                className="modal-form-input"
+                className={styles.modalFormInput}
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="custom-port" className="form-label">端口号:</label>
+            <div className={sharedStyles.formGroup}>
+              <label htmlFor="custom-port" className={sharedStyles.formLabel}>端口号:</label>
               <input
                 id="custom-port"
                 type="number"
                 value={customPort}
                 onChange={(e) => setCustomPort(Number(e.target.value))}
-                className="modal-form-input"
+                className={styles.modalFormInput}
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="protocol-type" className="form-label">协议类型:</label>
+            <div className={sharedStyles.formGroup}>
+              <label htmlFor="protocol-type" className={sharedStyles.formLabel}>协议类型:</label>
               <select
                 id="protocol-type"
                 value={protocolType}
                 onChange={(e) => setProtocolType(e.target.value as 'tcp' | 'udp')}
-                className="modal-form-select"
+                className={styles.modalFormSelect}
               >
                 <option value="tcp">TCP</option>
                 <option value="udp">UDP</option>
               </select>
             </div>
             <button 
-              className="modal-add-game-button"
+              className={styles.modalAddGameButton}
               onClick={handleAddCustomGame}
               disabled={!customGameName.trim()}
             >
@@ -143,11 +145,11 @@ const AdvancedSettingsModal: React.FC<AdvancedSettingsModalProps> = ({
 
         </div>
 
-        <div className="modal-footer">
-          <button className="modal-button-secondary" onClick={onClose}>
+        <div className={styles.modalFooter}>
+          <button className={styles.modalButtonSecondary} onClick={onClose}>
             取消
           </button>
-          <button className="modal-button-primary" onClick={handleSave}>
+          <button className={styles.modalButtonPrimary} onClick={handleSave}>
             保存设置
           </button>
         </div>

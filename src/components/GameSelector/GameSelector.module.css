@@ -1,0 +1,197 @@
+/* GameSelector 组件样式 */
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formLabel {
+  font-size: 16px;
+  font-weight: normal;
+  color: #2a2a2a;
+  text-align: left;
+  font-family: 'FusionPixel', monospace;
+  text-shadow: 1px 1px 0px #cccccc;
+}
+
+.selectorContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.formSelect {
+  flex: 1;
+  min-width: 0;
+  width: auto;
+  padding: 12px 16px;
+  border: 3px solid #2a2a2a;
+  border-radius: 0;
+  font-size: 14px;
+  background-color: #f8f8f8;
+  color: #2a2a2a;
+  transition: none;
+  cursor: pointer;
+  font-family: 'FusionPixel', monospace;
+  box-shadow: 
+    inset 2px 2px 0px #e0e0e0,
+    inset -2px -2px 0px #ffffff;
+  appearance: none;
+  background-image: 
+    linear-gradient(45deg, transparent 50%, #2a2a2a 50%),
+    linear-gradient(-45deg, transparent 50%, #2a2a2a 50%);
+  background-position: 
+    calc(100% - 20px) calc(50% - 2px),
+    calc(100% - 15px) calc(50% - 2px);
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 40px;
+}
+
+.formSelect option {
+  background-color: #f8f8f8;
+  color: #2a2a2a;
+  font-family: 'FusionPixel', monospace;
+  font-size: 14px;
+  padding: 8px 12px;
+  border: none;
+}
+
+.formSelect option:hover,
+.formSelect option:focus {
+  background-color: #4a90e2 !important;
+  color: #ffffff !important;
+}
+
+.formSelect option:checked {
+  background-color: #2a90e2 !important;
+  color: #ffffff !important;
+  font-weight: normal;
+}
+
+.formSelect option:disabled {
+  background-color: #e0e0e0 !important;
+  color: #888888 !important;
+}
+
+.formSelect:focus {
+  outline: none;
+  border-color: #4a4a4a;
+  box-shadow: 
+    inset 3px 3px 0px #d0d0d0,
+    inset -3px -3px 0px #ffffff,
+    0 0 0 2px #ffff00;
+}
+
+.formSelect:hover {
+  background-color: #f0f0f0;
+}
+
+.deleteButton {
+  padding: 12px 8px;
+  background: #e74c3c;
+  color: white;
+  border: 3px solid #2a2a2a;
+  border-radius: 0;
+  font-size: 14px;
+  font-weight: normal;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+  font-family: 'FusionPixel', monospace;
+  box-shadow: 
+    3px 3px 0px #2a2a2a,
+    6px 6px 0px #666666;
+  text-transform: uppercase;
+  width: 48px;
+  min-height: auto;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.deleteButton:hover:not(:disabled) {
+  background: #c0392b;
+  transform: translate(1px, 1px);
+  box-shadow: 
+    2px 2px 0px #2a2a2a,
+    4px 4px 0px #666666;
+}
+
+.deleteButton:active:not(:disabled) {
+  transform: translate(3px, 3px);
+  box-shadow: none;
+}
+
+.deleteButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 暗色模式 */
+@media (prefers-color-scheme: dark) {
+  .formLabel {
+    color: #e0e0e0;
+    text-shadow: 1px 1px 0px #1a1a1a;
+  }
+
+  .formSelect {
+    background-color: #3a3a3a;
+    color: #e0e0e0;
+    border-color: #e0e0e0;
+    box-shadow: 
+      inset 2px 2px 0px #2a2a2a,
+      inset -2px -2px 0px #4a4a4a;
+    background-image: 
+      linear-gradient(45deg, transparent 50%, #e0e0e0 50%),
+      linear-gradient(-45deg, transparent 50%, #e0e0e0 50%);
+  }
+
+  .formSelect option {
+    background-color: #3a3a3a !important;
+    color: #e0e0e0 !important;
+  }
+
+  .formSelect option:hover,
+  .formSelect option:focus {
+    background-color: #4a90e2 !important;
+    color: #ffffff !important;
+  }
+
+  .formSelect option:checked {
+    background-color: #2a90e2 !important;
+    color: #ffffff !important;
+  }
+
+  .formSelect option:disabled {
+    background-color: #2a2a2a !important;
+    color: #666666 !important;
+  }
+
+  .formSelect:focus {
+    border-color: #ffffff;
+    box-shadow: 
+      inset 3px 3px 0px #2a2a2a,
+      inset -3px -3px 0px #4a4a4a,
+      0 0 0 2px #ffff00;
+  }
+
+  .formSelect:hover {
+    background-color: #4a4a4a;
+  }
+
+  .deleteButton {
+    border-color: #e0e0e0;
+    box-shadow: 
+      3px 3px 0px #e0e0e0,
+      6px 6px 0px #c0c0c0;
+  }
+
+  .deleteButton:hover:not(:disabled) {
+    box-shadow: 
+      2px 2px 0px #e0e0e0,
+      4px 4px 0px #c0c0c0;
+  }
+}

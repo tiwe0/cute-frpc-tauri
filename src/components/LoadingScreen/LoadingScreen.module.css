@@ -1,0 +1,147 @@
+/* LoadingScreen 组件样式 */
+.loadingScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(10, 15, 35, 0.95);
+  backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: loadingFadeIn 0.4s ease-out;
+  transition: opacity 0.6s cubic-bezier(0.25, 0.1, 0.25, 1), 
+              transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1),
+              backdrop-filter 0.6s ease-out;
+}
+
+.loadingScreen.loadingExit {
+  opacity: 0;
+  transform: scale(1.05);
+  backdrop-filter: blur(0px);
+  pointer-events: none;
+}
+
+.loadingContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.loadingLogo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  animation: loadingPulse 2s ease-in-out infinite alternate;
+}
+
+.loadingIcon {
+  font-size: 4rem;
+  animation: loadingFloat 3s ease-in-out infinite;
+}
+
+.loadingIcon img {
+  width: 4rem;
+  height: 4rem;
+  object-fit: contain;
+}
+
+.loadingTitle {
+  font-family: 'FusionPixel', monospace;
+  font-size: 2.5rem;
+  color: #e8e3d3;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  margin: 0;
+  letter-spacing: 0.2rem;
+}
+
+.loadingSpinner {
+  position: relative;
+  width: 60px;
+  height: 60px;
+}
+
+.spinnerRing {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 3px solid transparent;
+  border-top: 3px solid #64b5f6;
+  border-radius: 50%;
+  animation: spinnerRotate 1.2s linear infinite;
+}
+
+.spinnerRing:nth-child(1) {
+  border-top-color: #64b5f6;
+  animation-delay: 0s;
+}
+
+.spinnerRing:nth-child(2) {
+  border-top-color: #81c784;
+  animation-delay: -0.4s;
+  transform: scale(0.8);
+}
+
+.spinnerRing:nth-child(3) {
+  border-top-color: #ffb74d;
+  animation-delay: -0.8s;
+  transform: scale(0.6);
+}
+
+.loadingText {
+  font-family: 'FusionPixel', monospace;
+  color: #a8a8a8;
+  font-size: 1rem;
+  letter-spacing: 0.1rem;
+  animation: loadingTextBlink 1.5s ease-in-out infinite;
+}
+
+/* 加载动画关键帧 */
+@keyframes loadingFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes loadingPulse {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes loadingFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes spinnerRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes loadingTextBlink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0.5;
+  }
+}
