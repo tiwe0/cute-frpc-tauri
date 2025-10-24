@@ -16,7 +16,7 @@
         "width": 480,
         "height": 750,
         "resizable": false,
-        "devtools": false
+        "devtools": true
       }
     ],
     "security": {
