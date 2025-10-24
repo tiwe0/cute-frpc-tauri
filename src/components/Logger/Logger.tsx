@@ -10,6 +10,7 @@ interface LoggerProps {
 
 const Logger: React.FC<LoggerProps> = ({ logs, showLogger, loggerAnimating }) => {
   const logEndRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (logEndRef.current) {
@@ -17,10 +18,24 @@ const Logger: React.FC<LoggerProps> = ({ logs, showLogger, loggerAnimating }) =>
     }
   }, [logs]);
 
+  // 动画完成后启用滚动
+  useEffect(() => {
+    if (containerRef.current && loggerAnimating) {
+      const timer = setTimeout(() => {
+        if (containerRef.current) {
+          containerRef.current.style.overflow = 'visible';
+        }
+      }, 400); // 等待动画完成
+      
+      return () => clearTimeout(timer);
+    }
+  }, [loggerAnimating]);
+
   if (!showLogger) return null;
 
   return (
     <div
+      ref={containerRef}
       className={`${styles.loggerFormGroup} ${
         loggerAnimating ? styles.loggerSlideIn : styles.loggerSlideOut
       }`}

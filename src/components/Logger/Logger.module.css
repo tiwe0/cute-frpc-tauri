@@ -1,4 +1,4 @@
-/* Logger 组件样式 */
+/* Logger 容器基础样式 */
 .loggerContainer {
   width: 100%;
   background: rgba(240, 240, 240, 0.8);
@@ -8,12 +8,13 @@
   box-shadow: 
     inset 2px 2px 0px rgba(224, 224, 224, 0.7),
     inset -2px -2px 0px rgba(255, 255, 255, 0.7);
-  min-height: 120px;
-  max-height: 200px;
+  height: 200px; /* 固定高度而不是max-height */
+  display: flex;
+  flex-direction: column;
 }
 
 .loggerContent {
-  height: 100%;
+  flex: 1;
   overflow-y: auto;
   padding: 12px;
   background: transparent;

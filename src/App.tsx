@@ -60,6 +60,7 @@ function App() {
   // Advanced settings state
   const [showAdvancedSettings, setShowAdvancedSettings] = useState(false);
   const [frpcConfig, setFrpcConfig] = useState<FRPCConfig | null>(null);
+  const frpcConfigRef = useRef<FRPCConfig | null>(null);
 
   // Audio reference
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -140,6 +141,7 @@ function App() {
         const configContent = await readTextFile(APP_FRPC_CONFIG_PATH);
         const config = FRPCConfig.fromTOML(configContent);
         setFrpcConfig(config);
+        frpcConfigRef.current = config;
         console.log('配置加载成功:', config);
       } catch (configError) {
         console.warn('配置加载失败，使用默认配置:', configError);
@@ -150,6 +152,7 @@ function App() {
           []
         );
         setFrpcConfig(defaultConfig);
+        frpcConfigRef.current = defaultConfig;
       }
       
       // 开始退出动画
@@ -278,6 +281,7 @@ function App() {
 
   const handleConfigChange = (config: FRPCConfig) => {
     setFrpcConfig(config);
+    frpcConfigRef.current = config;
     // 这里可以添加保存配置到文件的逻辑
     console.log('配置已更新:', config);
   };
@@ -337,7 +341,8 @@ function App() {
     let frpcConfigContent = frpcConfigResponse.data;
     await writeTextFile(APP_FRPC_CONFIG_PATH, frpcConfigContent);
     handleConfigChange(FRPCConfig.fromTOML(frpcConfigContent));
-    let url = `${frpcConfig?.serverAddr}:${frpcConfig?.proxies[0]?.remotePort}`;
+    const updatedFrpcConfig = frpcConfigRef.current;
+    let url = `${updatedFrpcConfig?.serverAddr}:${updatedFrpcConfig?.proxies[0]?.remotePort}`;
     await writeText(url);
     addLog("已更新本地 FRPC 配置文件");
     addLog(`联机地址已复制到粘贴板: ${url}`);
