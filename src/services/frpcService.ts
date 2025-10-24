@@ -56,17 +56,21 @@ export const createFRPCService = (): FRPCService => {
         });
         
         command.stdout.on("data", (line) => {
-          if (line.includes("start proxy success")) {
+          if (line.includes("conflict")) {
+            onLog("端口冲突，连接失败");
+              onStatusChange("连接失败");
+              onConnectionComplete();
+          } else if (line.includes("start proxy success")) {
             onConnectionComplete();
             onStatusChange("连接成功! 联机地址已复制到粘贴板!");
           }
           onLog(line, true); // 保留颜色
         });
-        
+
         command.stderr.on("data", (line) => {
           onLog(`错误: ${line}`, true); // 保留颜色
         });
-        
+
         return await command.spawn();
       } catch (error) {
         onLog(`连接失败: ${error}`);

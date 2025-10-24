@@ -70,7 +70,7 @@ function App() {
 
   // Custom hooks
   const { currentBackground, backgroundTransition, changeBackground, setCurrentBackground } = 
-    useBackgroundTransition();
+    useBackgroundTransition("/assets/default.jpg");  // 设置默认背景
   const { 
     logs, 
     showLogger, 
@@ -480,13 +480,6 @@ function App() {
     }
   }, [autoLoginAttempted, isAuthenticated, handleLogin]);
 
-  // Effects
-  useEffect(() => {
-    // 设置默认背景
-    setCurrentBackground("/assets/default.jpg");
-
-  }, []);
-
   // 当显示 logger 时，设置动画完成状态
   useEffect(() => {
     if (showLogger && !loggerAnimating && connectionState.isConnecting) {
@@ -535,41 +528,45 @@ function App() {
         >
           <AudioPlayer audioRef={audioRef} />
 
-          <h1 className={styles.appTitle}>蓝连哈</h1>
+          {/* 主要内容区域 */}
+          <div className={styles.mainContent}>
+            <h1 className={styles.appTitle}>蓝连哈</h1>
 
-        <form className={styles.formContainer}>
-          <GameSelector
-            currentGame={currentGame}
+            <form className={styles.formContainer}>
+              <GameSelector
+                currentGame={currentGame}
+                gameList={gameList}
+                isConnecting={connectionState.isConnecting}
+                onGameSelect={handleGameSelect}
+                onGameDelete={handleGameDelete}
+              />
+
+              <ConnectionManager
+                gamePort={gamePort}
+                connectionState={connectionState}
+                onConnect={handleConnect}
+                onDisconnect={handleDisconnect}
+              />
+
+              <Logger
+                logs={logs}
+                showLogger={showLogger}
+                loggerAnimating={loggerAnimating}
+              />
+            </form>
+          </div>
+
+          {/* Footer 区域 */}
+          <Footer onOpenAdvancedSettings={handleOpenAdvancedSettings} />
+
+          {/* 高级设置弹窗 */}
+          <AdvancedSettingsModal
+            isOpen={showAdvancedSettings}
             gameList={gameList}
-            isConnecting={connectionState.isConnecting}
-            onGameSelect={handleGameSelect}
-            onGameDelete={handleGameDelete}
+            onClose={handleCloseAdvancedSettings}
+            frpcConfig={frpcConfig}
+            onConfigChange={handleConfigChange}
           />
-
-          <ConnectionManager
-            gamePort={gamePort}
-            connectionState={connectionState}
-            onConnect={handleConnect}
-            onDisconnect={handleDisconnect}
-          />
-
-          <Logger
-            logs={logs}
-            showLogger={showLogger}
-            loggerAnimating={loggerAnimating}
-          />
-        </form>
-
-        <Footer onOpenAdvancedSettings={handleOpenAdvancedSettings} />
-
-        {/* 高级设置弹窗 */}
-        <AdvancedSettingsModal
-          isOpen={showAdvancedSettings}
-          gameList={gameList}
-          onClose={handleCloseAdvancedSettings}
-          frpcConfig={frpcConfig}
-          onConfigChange={handleConfigChange}
-        />
         </div>
       )}
     </main>
