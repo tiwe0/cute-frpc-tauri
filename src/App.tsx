@@ -259,8 +259,8 @@ function App() {
   }, [loginLoading, isAuthenticated, setToken, getUserInfo, saveApiKey, initConfig]);
 
   // Game selection handler
-  const handleGameSelect = (port: number, game: Game) => {
-    setGamePort(port);
+  const handleGameSelect = (game: Game) => {
+    setGamePort(game.defaultPort);
     setCurrentGame(game);
     if (game.background) {
       changeBackground(game.background);
@@ -502,8 +502,8 @@ function App() {
 
         <form className="form-container">
           <GameSelector
+            currentGame={currentGame}
             gameList={gameList}
-            gamePort={gamePort}
             isConnecting={connectionState.isConnecting}
             onGameSelect={handleGameSelect}
           />
