@@ -3,7 +3,7 @@ import styles from "./styles/App.module.css";
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Child } from "@tauri-apps/plugin-shell";
-import { copyFile, exists, readTextFile, writeTextFile } from "@tauri-apps/plugin-fs";
+import { copyFile, exists, readTextFile, writeTextFile, remove } from "@tauri-apps/plugin-fs";
 import { APP_FRPC_CONFIG_PATH, APP_SAKURA_API_KEY_PATH, APP_GAMELIST_PATH, APP_DEFAULT_GAMELIST_PATH } from "./utils/const";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { writeText } from '@tauri-apps/plugin-clipboard-manager';
@@ -398,6 +398,17 @@ function App() {
 
   getCurrentWindow().listen("tauri://destroyed", killFRPCProcessIfExists)
 
+  const handleLogout = async () => {
+    // 断开连接（如果有）
+    await handleDisconnect();
+    if (await exists(APP_SAKURA_API_KEY_PATH)) {
+      await remove(APP_SAKURA_API_KEY_PATH);
+      console.log('API Key 已删除');
+    }
+    // 返回登陆界面
+    setIsAuthenticated(false);
+  }
+
   const handleDisconnect = async () => {
     setConnectionState(prev => ({ ...prev, isAnimating: true }));
     
@@ -557,7 +568,7 @@ function App() {
           </div>
 
           {/* Footer 区域 */}
-          <Footer onOpenAdvancedSettings={handleOpenAdvancedSettings} />
+          <Footer onLogout={handleLogout} onOpenAdvancedSettings={handleOpenAdvancedSettings} />
 
           {/* 高级设置弹窗 */}
           <AdvancedSettingsModal
