@@ -5,9 +5,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: 
-    repeating-conic-gradient(#f0f0f0 0% 25%, #e8e8e8 25% 50%) 
-    50% / 20px 20px;
+  background: transparent; /* 移除固定背景，让BackgroundManager的背景显示 */
   display: flex;
   align-items: center;
   justify-content: center;
