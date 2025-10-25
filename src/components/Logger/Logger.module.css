@@ -1,7 +1,7 @@
 /* Logger 容器基础样式 */
 .loggerContainer {
   width: 100%;
-  background: rgba(240, 240, 240, 0.8);
+  background: rgba(240, 240, 240, 0.6); /* 降低透明度从0.8到0.6 */
   backdrop-filter: blur(5px);
   border: 2px solid rgba(42, 42, 42, 0.7);
   border-radius: 0;

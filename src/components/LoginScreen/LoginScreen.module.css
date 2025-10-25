@@ -13,7 +13,7 @@
 }
 
 .loginContent {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.7); /* 降低透明度从0.9到0.7 */
   backdrop-filter: blur(20px);
   border: 4px solid rgba(42, 42, 42, 0.8);
   border-radius: 0;
